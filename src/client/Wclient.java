@@ -7,6 +7,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import commun.Message;
+
 public class Wclient implements Runnable {
 
 	private ObjectInputStream input;
@@ -20,10 +22,13 @@ public class Wclient implements Runnable {
 		this.port = 3000;
 		try {
 			this.socket = new Socket(InetAddress.getByName(this.address), port);
+
 			this.output = new ObjectOutputStream(socket.getOutputStream());
+
 			this.input = new ObjectInputStream(socket.getInputStream());
 
-			// send(new Message("upload_res", "hello", "NO", "hii"));
+			this.sendMessage(new Message("CONNECTION ", "hello", "NO", "hii"));
+
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -38,15 +43,20 @@ public class Wclient implements Runnable {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		boolean running = true;
+		while (running) {
+			this.sendMessage(new Message("CONNECTION ", "hello", "NO", "hii"));
+
+		}
 
 	}
 
 	public void sendMessage(Message msg) {
 		try {
+
 			this.output.writeObject(msg);
 			this.output.flush();
-			System.out.println("User message : " + msg.toString());
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

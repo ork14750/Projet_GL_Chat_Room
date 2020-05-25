@@ -5,6 +5,8 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import commun.Message;
+
 public class Wserver implements Runnable {
 
 	private Wthread clients[];
@@ -22,7 +24,7 @@ public class Wserver implements Runnable {
 
 			System.out.println(
 					"Server startet. IP : " + InetAddress.getLocalHost() + ", Port : " + server.getLocalPort());
-			startTheard();
+			this.startTheard();
 		} catch (IOException ioe) {
 			System.out.println("Can not bind to port : " + sPort + "\nRetrying");
 			// ui.RetryStart(0);
@@ -35,8 +37,8 @@ public class Wserver implements Runnable {
 		while (thread != null) {
 			try {
 				// System.out.println("waiting for connection ... ");
-				thread.sleep(1000);
-				System.out.println("Hello" + thread.currentThread().getName());
+
+				System.out.println("Hello :" + thread.currentThread().getName());
 				this.addClientThread(server.accept());
 
 			} catch (Exception e) {
@@ -55,16 +57,24 @@ public class Wserver implements Runnable {
 	}
 
 	public void addClientThread(Socket socket) throws IOException {
+
 		this.clients[this.nbClients] = new Wthread(this, socket);
+
 		Wthread currentClient = this.clients[this.nbClients];
+
 		currentClient.openConnection();
 		currentClient.start();
+
 		System.out.println("Hello new client " + currentClient.getName());
 		this.nbClients++;
 
 	}
 
-	public void messageHandler(int ID, Message msg) {
+	public synchronized void messageHandler(int ID, Message msg) {
+		System.out.println("new message " + ID);
+		if (msg.type == "CONNECTION") {
+			System.out.print("Connection youpi !!! : " + msg.body);
+		}
 
 	}
 

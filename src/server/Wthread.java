@@ -5,6 +5,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import commun.Message;
+
 public class Wthread extends Thread {
 
 	private Wserver server;
@@ -20,15 +22,22 @@ public class Wthread extends Thread {
 		this.port = socket.getPort();
 	}
 
-	@SuppressWarnings("deprecation")
+	// @SuppressWarnings("deprecation")
 	@Override
 	public void run() {
+		System.out.println("new message ");
+
 		while (true) {
+			System.out.println("hello in while");
 			try {
+
 				Message msg = (Message) this.input.readObject();
-				server.messageHandler(this.port, msg);
+				System.out.println(msg.body);
+				server.messageHandler(this.port, (Message) this.input.readObject());
+				System.out.println(msg.body);
 
 			} catch (Exception e) {
+				System.out.println(e);
 				stop();
 				// server.remove(port);
 			}

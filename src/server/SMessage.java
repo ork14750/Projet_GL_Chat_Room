@@ -1,13 +1,13 @@
-package client;
+package server;
 
 import java.io.Serializable;
 
-public class Message implements Serializable {
+public class SMessage implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	public String type, sender, body, recipient;
 
-	public Message(String type, String sender, String body, String recipient) {
+	public SMessage(String type, String sender, String body, String recipient) {
 		this.type = type;
 		this.sender = sender;
 		this.body = body;
