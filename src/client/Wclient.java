@@ -20,6 +20,10 @@ public class Wclient implements Runnable {
 		this.port = 3000;
 		try {
 			this.socket = new Socket(InetAddress.getByName(this.address), port);
+			this.output = new ObjectOutputStream(socket.getOutputStream());
+			this.input = new ObjectInputStream(socket.getInputStream());
+
+			// send(new Message("upload_res", "hello", "NO", "hii"));
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -36,6 +40,18 @@ public class Wclient implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 
+	}
+
+	public void sendMessage(Message msg) {
+		try {
+			this.output.writeObject(msg);
+			this.output.flush();
+			System.out.println("User message : " + msg.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+		}
 	}
 
 }

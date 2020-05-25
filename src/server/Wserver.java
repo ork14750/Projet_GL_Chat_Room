@@ -14,7 +14,7 @@ public class Wserver implements Runnable {
 	private int sPort = 3000;
 
 	public Wserver() {
-		clients = new Wthread[50];
+		clients = new Wthread[10];
 
 		try {
 			server = new ServerSocket(sPort);
@@ -37,8 +37,7 @@ public class Wserver implements Runnable {
 				// System.out.println("waiting for connection ... ");
 				thread.sleep(1000);
 				System.out.println("Hello" + thread.currentThread().getName());
-				server.accept();
-				System.out.println("Hello new client");
+				this.addClientThread(server.accept());
 
 			} catch (Exception e) {
 				System.out.println("Error");
@@ -55,13 +54,17 @@ public class Wserver implements Runnable {
 		}
 	}
 
-	public void addClientThread(Socket socket) {
+	public void addClientThread(Socket socket) throws IOException {
 		this.clients[this.nbClients] = new Wthread(this, socket);
-
-		this.clients[this.nbClients].openConnection();
-		this.clients[this.nbClients].start();
-
+		Wthread currentClient = this.clients[this.nbClients];
+		currentClient.openConnection();
+		currentClient.start();
+		System.out.println("Hello new client " + currentClient.getName());
 		this.nbClients++;
+
+	}
+
+	public void messageHandler(int ID, Message msg) {
 
 	}
 

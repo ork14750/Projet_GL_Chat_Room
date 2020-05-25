@@ -9,8 +9,8 @@ public class Wthread extends Thread {
 
 	private Wserver server;
 	private Socket socket;
-	private ObjectInputStream input;
-	private ObjectOutputStream output;
+	private ObjectInputStream input = null;
+	private ObjectOutputStream output = null;
 	private int port;
 
 	public Wthread(Wserver server, Socket socket) {
@@ -25,6 +25,8 @@ public class Wthread extends Thread {
 	public void run() {
 		while (true) {
 			try {
+				Message msg = (Message) this.input.readObject();
+				server.messageHandler(this.port, msg);
 
 			} catch (Exception e) {
 				stop();
