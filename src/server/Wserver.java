@@ -3,6 +3,7 @@ package server;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
+import java.net.Socket;
 
 public class Wserver implements Runnable {
 
@@ -10,9 +11,7 @@ public class Wserver implements Runnable {
 	private ServerSocket server = null;
 	private Thread thread = null;
 	private int nbClients = 0;
-	private int sPort = 13000;
-	// public ServerFrame ui;
-	// public Database db;
+	private int sPort = 3000;
 
 	public Wserver() {
 		clients = new Wthread[50];
@@ -35,7 +34,11 @@ public class Wserver implements Runnable {
 		// TODO Auto-generated method stub
 		while (thread != null) {
 			try {
-				System.out.println("waiting for connection ... ");
+				// System.out.println("waiting for connection ... ");
+				thread.sleep(1000);
+				System.out.println("Hello" + thread.currentThread().getName());
+				server.accept();
+				System.out.println("Hello new client");
 
 			} catch (Exception e) {
 				System.out.println("Error");
@@ -50,6 +53,16 @@ public class Wserver implements Runnable {
 			thread = new Thread(this);
 			thread.start();
 		}
+	}
+
+	public void addClientThread(Socket socket) {
+		this.clients[this.nbClients] = new Wthread(this, socket);
+
+		this.clients[this.nbClients].openConnection();
+		this.clients[this.nbClients].start();
+
+		this.nbClients++;
+
 	}
 
 	@SuppressWarnings("deprecation")
