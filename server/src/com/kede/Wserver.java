@@ -126,6 +126,10 @@ public class Wserver implements Runnable {
 		}
 	}
 	
+	public synchronized void removeClient() {
+		
+	}
+	
 	public void sendClientList(String user){
 		 for(int i = 0; i < nbClients; i++){
 	            findClientByLogin(user).sendMessage(new Message("NEW_USER", "SERVER", clients[i].getClientLogin(), user));
