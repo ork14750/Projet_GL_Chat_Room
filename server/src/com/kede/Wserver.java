@@ -126,7 +126,7 @@ public class Wserver implements Runnable {
 		}
 	}
 	
-	public synchronized void removeClient() {
+	public synchronized void removeClient(int id) {
 		
 	}
 	
