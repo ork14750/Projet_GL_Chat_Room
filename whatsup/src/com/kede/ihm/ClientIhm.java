@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 
 import com.kede.Message;
 import com.kede.Wclient;
+import javax.swing.JPasswordField;
 
 public class ClientIhm {
 	private Wclient client;
@@ -25,17 +26,17 @@ public class ClientIhm {
 	private JFrame frame;
 	private JTextField textField;
 	private JTextField textField_1;
-	private JButton btnNewButton;
+	public JButton btnNewButton;
 	private JTextField textField_2;
 	private JLabel lblNewLabel_2;
 	private JLabel lblNewLabel_3;
-	private JTextField textField_3;
+	private JPasswordField textField_3;
 	public JButton btnNewButton_1;
 	public JButton btnNewButton_2;
 	private JTextArea textPane;
 	private JTextField textField_4;
 	private JComboBox comboBox;
-	private JButton btnNewButton_3;
+	public JButton btnNewButton_3;
 
 	/**
 	 * Launch the application.
@@ -115,12 +116,13 @@ public class ClientIhm {
 		lblNewLabel_3.setBounds(205, 69, 85, 13);
 		frame.getContentPane().add(lblNewLabel_3);
 
-		textField_3 = new JTextField();
+		textField_3 = new JPasswordField();
 		textField_3.setBounds(285, 66, 136, 19);
 		frame.getContentPane().add(textField_3);
 		textField_3.setColumns(10);
 
 		btnNewButton_1 = new JButton("Se connecter");
+		btnNewButton_1.setEnabled(false);
 		btnNewButton_1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -131,6 +133,8 @@ public class ClientIhm {
 		frame.getContentPane().add(btnNewButton_1);
 
 		btnNewButton_2 = new JButton("S'inscrire");
+		btnNewButton_2.setEnabled(false);
+
 		btnNewButton_2.setBounds(571, 65, 104, 21);
 		frame.getContentPane().add(btnNewButton_2);
 
@@ -169,6 +173,8 @@ public class ClientIhm {
 		textField_4.setColumns(10);
 
 		btnNewButton_3 = new JButton("Envoyer");
+		btnNewButton_3.setEnabled(false);
+
 		btnNewButton_3.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

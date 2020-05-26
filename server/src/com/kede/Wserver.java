@@ -77,6 +77,7 @@ public class Wserver implements Runnable {
 	public synchronized void messageHandler(int ID, Message msg) {
 		System.out.println("new message " + msg.type + msg.type.equals("CONNECTION"));
 		if (msg.type.equals("CONNECTION")) {
+			 clients[this.findClientByID(ID)].sendMessage(new Message("CONNECTION", "SERVER", "OK", msg.sender));
 			ihm.textArea_1.append("\nUn nouveau client s'est connecté au serveur !");
 		} else if (msg.type.equals("LOGIN")) {
 

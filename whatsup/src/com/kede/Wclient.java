@@ -57,6 +57,15 @@ public class Wclient implements Runnable {
 						this.ihm.logIt("SERVER", "MOI");
 
 					}
+				}else if(msg.type.equals("CONNECTION")) {
+					if(msg.body.equals("OK")) {
+						this.ihm.btnNewButton.setEnabled(false);
+						this.ihm.btnNewButton_1.setEnabled(true);
+						this.ihm.btnNewButton_2.setEnabled(true);
+						
+						this.ihm.logIt("SERVER", "MOI");
+
+					}
 				}
 
 			} catch (ClassNotFoundException | IOException e) {
