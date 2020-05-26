@@ -1,4 +1,4 @@
-package client;
+package com.kede;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -13,7 +13,7 @@ class Tests {
 
 	@Test
 	void sendMessageTest() {
-		Wclient client = new Wclient();
+		Wclient client = new Wclient(null);
 
 	}
 

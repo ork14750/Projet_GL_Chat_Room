@@ -1,4 +1,4 @@
-package client;
+package com.kede;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -7,7 +7,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import commun.Message;
+import com.kede.ihm.ClientIhm;
 
 public class Wclient implements Runnable {
 
@@ -17,17 +17,15 @@ public class Wclient implements Runnable {
 	private int port;
 	private String address;
 
-	public Wclient() {
+	public Wclient(ClientIhm ihm) {
 		this.address = "127.0.0.1";
 		this.port = 3000;
 		try {
 			this.socket = new Socket(InetAddress.getByName(this.address), port);
 
 			this.output = new ObjectOutputStream(socket.getOutputStream());
-
+			this.output.flush();
 			this.input = new ObjectInputStream(socket.getInputStream());
-
-			this.sendMessage(new Message("CONNECTION", "hello", "NO", "hii"));
 
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -45,7 +43,15 @@ public class Wclient implements Runnable {
 	public void run() {
 		boolean running = true;
 		while (running) {
-			this.sendMessage(new Message("CONNECTION ", "hello", "NO", "hii"));
+			Message msg;
+			try {
+				msg = (Message) input.readObject();
+				System.out.println("Incoming : " + msg.toString());
+
+			} catch (ClassNotFoundException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 		}
 

@@ -1,4 +1,4 @@
-package client.ihm;
+package com.kede.ihm;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -15,10 +15,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
-import client.Wclient;
+import com.kede.Message;
+import com.kede.Wclient;
 
 public class ClientIhm {
 	private Wclient client;
+	private Thread clientThr;
 
 	private JFrame frame;
 	private JTextField textField;
@@ -56,7 +58,6 @@ public class ClientIhm {
 	 * Create the application.
 	 */
 	public ClientIhm() {
-		this.client = new Wclient();
 		initialize();
 	}
 
@@ -65,7 +66,7 @@ public class ClientIhm {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 713, 556);
+		frame.setBounds(100, 100, 713, 466);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
@@ -74,12 +75,13 @@ public class ClientIhm {
 		frame.getContentPane().add(lblNewLabel);
 
 		textField = new JTextField();
-		textField.setText("");
+		textField.setText("127.0.0.1");
 		textField.setBounds(85, 23, 96, 19);
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
 
 		textField_1 = new JTextField();
+		textField_1.setText("3000");
 		textField_1.setBounds(285, 23, 96, 19);
 		frame.getContentPane().add(textField_1);
 		textField_1.setColumns(10);
@@ -92,6 +94,8 @@ public class ClientIhm {
 		btnNewButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				actionJoinServer();
+
 			}
 		});
 		btnNewButton.setBounds(430, 22, 85, 21);
@@ -104,6 +108,7 @@ public class ClientIhm {
 
 		lblNewLabel_2 = new JLabel("Login:");
 		lblNewLabel_2.setBounds(30, 69, 45, 13);
+
 		frame.getContentPane().add(lblNewLabel_2);
 
 		lblNewLabel_3 = new JLabel("Mot de passe:");
@@ -171,4 +176,23 @@ public class ClientIhm {
 		btnNewButton_3.setBounds(590, 340, 85, 21);
 		frame.getContentPane().add(btnNewButton_3);
 	}
+
+	public void actionJoinServer() {
+		String host = this.textField.getText();
+		int port = Integer.parseInt(this.textField_1.getText());
+
+		if (!host.isEmpty() && !this.textField.getText().isEmpty()) {
+			try {
+				client = new Wclient(this);
+				clientThr = new Thread(client);
+				clientThr.start();
+				client.sendMessage(new Message("CONNECTION", "testUser", "testContent", "SERVER"));
+			} catch (Exception ex) {
+				System.out.println(ex);
+			}
+
+		}
+
+	}
+
 }
