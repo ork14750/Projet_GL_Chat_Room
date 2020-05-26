@@ -12,8 +12,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JTextPane;
 
 import com.kede.Message;
 import com.kede.Wclient;
@@ -30,9 +30,9 @@ public class ClientIhm {
 	private JLabel lblNewLabel_2;
 	private JLabel lblNewLabel_3;
 	private JTextField textField_3;
-	private JButton btnNewButton_1;
-	private JButton btnNewButton_2;
-	private JTextPane textPane;
+	public JButton btnNewButton_1;
+	public JButton btnNewButton_2;
+	private JTextArea textPane;
 	private JTextField textField_4;
 	private JComboBox comboBox;
 	private JButton btnNewButton_3;
@@ -124,6 +124,7 @@ public class ClientIhm {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				actionLogin();
 			}
 		});
 		btnNewButton_1.setBounds(430, 65, 111, 21);
@@ -158,7 +159,7 @@ public class ClientIhm {
 		scrollPane.setColumnHeaderView(comboBox);
 		comboBox.setModel(new DefaultComboBoxModel(new String[] { "Groupes", "Membres" }));
 
-		textPane = new JTextPane();
+		textPane = new JTextArea();
 		textPane.setBounds(285, 139, 390, 170);
 		frame.getContentPane().add(textPane);
 
@@ -187,6 +188,29 @@ public class ClientIhm {
 				clientThr = new Thread(client);
 				clientThr.start();
 				client.sendMessage(new Message("CONNECTION", "testUser", "testContent", "SERVER"));
+			} catch (Exception ex) {
+				System.out.println(ex);
+			}
+
+		}
+
+	}
+
+	public void logIt(String from, String to) {
+		this.textPane.append("[ " + from + ">> " + to + " ] : Connexion réussite \n");
+
+	}
+
+	public void actionLogin() {
+		String host = this.textField.getText();
+		int port = Integer.parseInt(this.textField_1.getText());
+
+		if (!host.isEmpty() && !this.textField.getText().isEmpty()) {
+			try {
+				client = new Wclient(this);
+				clientThr = new Thread(client);
+				clientThr.start();
+				client.sendMessage(new Message("LOGIN", "testUser", "testContent", "SERVER"));
 			} catch (Exception ex) {
 				System.out.println(ex);
 			}

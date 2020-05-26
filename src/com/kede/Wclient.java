@@ -16,10 +16,13 @@ public class Wclient implements Runnable {
 	private Socket socket;
 	private int port;
 	private String address;
+	private ClientIhm ihm;
 
 	public Wclient(ClientIhm ihm) {
 		this.address = "127.0.0.1";
 		this.port = 3000;
+		this.ihm = ihm;
+
 		try {
 			this.socket = new Socket(InetAddress.getByName(this.address), port);
 
@@ -47,6 +50,14 @@ public class Wclient implements Runnable {
 			try {
 				msg = (Message) input.readObject();
 				System.out.println("Incoming : " + msg.toString());
+
+				if (msg.type.equals("LOGIN")) {
+					if (msg.body.equals("OK")) {
+						this.ihm.btnNewButton_1.setEnabled(false);
+						this.ihm.logIt("SERVER", "MOI");
+
+					}
+				}
 
 			} catch (ClassNotFoundException | IOException e) {
 				// TODO Auto-generated catch block
