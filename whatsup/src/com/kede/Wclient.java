@@ -18,6 +18,7 @@ public class Wclient implements Runnable {
 	private String address;
 	private ClientIhm ihm;
 
+
 	public Wclient(ClientIhm ihm) {
 		this.address = "127.0.0.1";
 		this.port = 3000;
@@ -49,12 +50,14 @@ public class Wclient implements Runnable {
 			Message msg;
 			try {
 				msg = (Message) input.readObject();
-				System.out.println("Incoming : " + msg.toString());
+				System.out.println("Incoming : " + msg.toString() + " "+msg.type.equals("MESSAGE"));
+				
 
 				if (msg.type.equals("LOGIN")) {
 					if (msg.body.equals("OK")) {
 						this.ihm.btnNewButton_1.setEnabled(false);
-						this.ihm.logIt("SERVER", "MOI");
+						this.ihm.btnNewButton_3.setEnabled(true);
+						this.ihm.logIt("SERVER", "MOI", "CONNECTION REUSSITE, VOUS POUVEZ COMMENCER A CHATTER");
 
 					}
 				}else if(msg.type.equals("CONNECTION")) {
@@ -63,10 +66,33 @@ public class Wclient implements Runnable {
 						this.ihm.btnNewButton_1.setEnabled(true);
 						this.ihm.btnNewButton_2.setEnabled(true);
 						
-						this.ihm.logIt("SERVER", "MOI");
+						this.ihm.logIt("SERVER", "MOI", "VOUS AVEZ REJOINT LE SERVEUR AVEC SUCCES, VEUILLEZ VOUS LOGGER");
 
 					}
-				}
+				}else if(msg.type.equals("NEW_USER")){
+		            if(!msg.body.equals(this.ihm.getLogin())){
+		                boolean exists = false;
+		                for(int i = 0; i < this.ihm.modelUser.getSize(); i++){
+		                    if(this.ihm.modelUser.getElementAt(i).equals(msg.body)){
+		                        exists = true; break;
+		                    }
+		                }
+		                if(!exists){ this.ihm.modelUser.addElement(msg.body);
+		                
+		                }
+		            }
+		        }else if(msg.type.equals("MESSAGE")){
+                    if(msg.recipient.equals(this.ihm.getLogin())){
+                    	System.out.println("message for me");
+                       this.ihm.logIt(msg.sender, msg.recipient, msg.body);
+                    }
+                    else{
+                    	this.ihm.logIt(msg.sender, msg.recipient, msg.body);
+                    	System.out.println("message for me");
+                    }
+                                            
+              
+                }
 
 			} catch (ClassNotFoundException | IOException e) {
 				// TODO Auto-generated catch block

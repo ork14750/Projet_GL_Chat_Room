@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.AbstractListModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -22,6 +23,16 @@ import javax.swing.JPasswordField;
 public class ClientIhm {
 	private Wclient client;
 	private Thread clientThr;
+	private String login, password;
+	public  DefaultListModel modelUser;
+
+	public String getLogin() {
+		return login;
+	}
+
+	public String getPassword() {
+		return password;
+	}
 
 	private JFrame frame;
 	private JTextField textField;
@@ -37,6 +48,7 @@ public class ClientIhm {
 	private JTextField textField_4;
 	private JComboBox comboBox;
 	public JButton btnNewButton_3;
+	private JList list;
 
 	/**
 	 * Launch the application.
@@ -60,7 +72,9 @@ public class ClientIhm {
 	 */
 	public ClientIhm() {
 		initialize();
+		modelUser.addElement("TOUT LE MONDE");
 	}
+	
 
 	/**
 	 * Initialize the contents of the frame.
@@ -142,33 +156,23 @@ public class ClientIhm {
 		scrollPane.setBounds(30, 139, 151, 170);
 		frame.getContentPane().add(scrollPane);
 
-		JList list = new JList();
+		list = new JList();
 		scrollPane.setViewportView(list);
-		list.setModel(new AbstractListModel() {
-			String[] values = new String[] { "enf", "$nfknd,f", "kdn", "dfnkdn", "dfkjpkldn", "jdfn", "dfjnkpd,",
-					"dnfkl,d", "dkljd", "lkdnf$d", "kikdn", "df" };
-
-			@Override
-			public int getSize() {
-				return values.length;
-			}
-
-			@Override
-			public Object getElementAt(int index) {
-				return values[index];
-			}
-		});
+		list.setModel((modelUser = new DefaultListModel()));
 
 		comboBox = new JComboBox();
 		scrollPane.setColumnHeaderView(comboBox);
 		comboBox.setModel(new DefaultComboBoxModel(new String[] { "Groupes", "Membres" }));
 
 		textPane = new JTextArea();
-		textPane.setBounds(285, 139, 390, 170);
+		textPane.setBounds(205, 139, 470, 170);
+		textPane.setLineWrap(true);
+		textPane.setWrapStyleWord(true);
+		textPane.setFont(new java.awt.Font("Consolas", 0, 12));
 		frame.getContentPane().add(textPane);
 
 		textField_4 = new JTextField();
-		textField_4.setBounds(285, 341, 284, 19);
+		textField_4.setBounds(205, 341, 364, 19);
 		frame.getContentPane().add(textField_4);
 		textField_4.setColumns(10);
 
@@ -178,6 +182,7 @@ public class ClientIhm {
 		btnNewButton_3.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				actionSendMessage();
 			}
 		});
 		btnNewButton_3.setBounds(590, 340, 85, 21);
@@ -202,27 +207,34 @@ public class ClientIhm {
 
 	}
 
-	public void logIt(String from, String to) {
-		this.textPane.append("[ " + from + "> " + to + " ] : Connexion réussite \n");
+	public void logIt(String from, String to, String msg) {
+		this.textPane.append("[ " + from + "> " + to + " ] : "+msg+"\n");
 
 	}
 
+	@SuppressWarnings("deprecation")
 	public void actionLogin() {
-		String host = this.textField.getText();
-		int port = Integer.parseInt(this.textField_1.getText());
-
-		if (!host.isEmpty() && !this.textField.getText().isEmpty()) {
-			try {
-				client = new Wclient(this);
-				clientThr = new Thread(client);
-				clientThr.start();
-				client.sendMessage(new Message("LOGIN", "testUser", "testContent", "SERVER"));
-			} catch (Exception ex) {
-				System.out.println(ex);
-			}
-
-		}
+		this.login = this.textField_2.getText();
+    	password = this.textField_3.getText();
+        
+        if(!login.isEmpty() && !password.isEmpty()){
+            client.sendMessage(new Message("LOGIN", login, password, "SERVER"));
+        }
 
 	}
+	
+	
+	    
+	public void actionSendMessage() {
+		String body = this.textField_4.getText();
+		String recipient = this.list.getSelectedValue().toString();
+		client.sendMessage(new Message("MESSAGE", login, body, recipient));
+		
+	}
+	
+	
+	
+	
+	
 
 }

@@ -75,18 +75,26 @@ public class Wserver implements Runnable {
 	}
 
 	public synchronized void messageHandler(int ID, Message msg) {
-		System.out.println("new message " + msg.type + msg.type.equals("CONNECTION"));
 		if (msg.type.equals("CONNECTION")) {
 			 clients[this.findClientByID(ID)].sendMessage(new Message("CONNECTION", "SERVER", "OK", msg.sender));
-			ihm.textArea_1.append("\nUn nouveau client s'est connecté au serveur !");
-		} else if (msg.type.equals("LOGIN")) {
+			 ihm.textArea_1.append("\nUn nouveau client s'est connecté au serveur !");
+		}else if (msg.type.equals("LOGIN")) {
 
 			clients[this.findClientByID(ID)].setClientLogin(msg.sender);
 			clients[this.findClientByID(ID)].sendMessage(new Message("LOGIN", "SERVER", "OK", msg.sender));
 			this.diffuseMessage("NEW_USER", "SERVER", msg.sender);
+			this.sendClientList(msg.sender);
 
-		}
-
+		} else if(msg.type.equals("MESSAGE")){
+			System.out.println(msg);
+            if(msg.recipient.equals("TOUT LE MONDE")){
+                diffuseMessage("MESSAGE", msg.sender, msg.body);
+            }
+            else{
+                findClientByLogin(msg.recipient).sendMessage(new Message(msg.type, msg.sender, msg.body, msg.recipient));
+                clients[findClientByID(ID)].sendMessage(new Message(msg.type, msg.sender, msg.body, msg.recipient));
+            }
+        }
 	}
 
 	public ServerIhm getIhm() {
@@ -112,10 +120,16 @@ public class Wserver implements Runnable {
 	}
 
 	public void diffuseMessage(String type, String sender, String body) {
-		Message msg = new Message(type, sender, body, "All clients");
+		Message msg = new Message(type, sender, body, "TOUT LE MONDE");
 		for (int i = 0; i < this.nbClients; i++) {
 			clients[i].sendMessage(msg);
 		}
+	}
+	
+	public void sendClientList(String user){
+		 for(int i = 0; i < nbClients; i++){
+	            findClientByLogin(user).sendMessage(new Message("NEW_USER", "SERVER", clients[i].getClientLogin(), user));
+	        }
 	}
 
 	@SuppressWarnings("deprecation")
