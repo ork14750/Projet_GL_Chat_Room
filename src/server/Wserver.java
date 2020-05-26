@@ -24,6 +24,9 @@ public class Wserver implements Runnable {
 		try {
 			server = new ServerSocket(sPort);
 			sPort = server.getLocalPort();
+			for (int i = 0; i < 50; i++) {
+				ihm.textArea_1.append("\nje suis un ling temos fjnfknf");
+			}
 			ihm.textArea_1
 					.append("Server startet. IP : " + InetAddress.getLocalHost() + ", Port : " + server.getLocalPort());
 

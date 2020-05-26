@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.CompoundBorder;
@@ -91,21 +92,6 @@ public class ServerIHM {
 		btnNewButton_1.setBounds(334, 50, 154, 21);
 		frame.getContentPane().add(btnNewButton_1);
 
-		// JTextArea textArea_1 = new JTextArea();
-		// textArea.setBounds(557, 122, -113, 175);
-		// frame.getContentPane().add(textArea_1);
-
-		textArea_1 = new JTextArea();
-		textArea_1.setBackground(SystemColor.text);
-		textArea_1.setColumns(20);
-		textArea_1.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
-		textArea_1.setRows(5);
-		textArea_1.setBounds(10, 154, 605, 204);
-		this.textArea_1
-				.setBorder(new CompoundBorder(new LineBorder(new Color(130, 135, 144)), new EmptyBorder(0, 0, 0, 0)));
-		textArea_1.setFocusable(false);
-		frame.getContentPane().add(textArea_1);
-
 		lblNewLabel_1 = new JLabel("Port d'\u00E9coute:");
 		lblNewLabel_1.setFont(new Font("Lucida Bright", Font.BOLD, 11));
 		lblNewLabel_1.setBounds(10, 54, 85, 13);
@@ -140,10 +126,29 @@ public class ServerIHM {
 		lblNewLabel_4.setBounds(123, 87, 45, 13);
 		frame.getContentPane().add(lblNewLabel_4);
 
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 194, 605, 164);
+		frame.getContentPane().add(scrollPane);
+
+		// JTextArea textArea_1 = new JTextArea();
+		// textArea.setBounds(557, 122, -113, 175);
+		// frame.getContentPane().add(textArea_1);
+
+		textArea_1 = new JTextArea();
+		scrollPane.setViewportView(textArea_1);
+		textArea_1.setBackground(SystemColor.text);
+		textArea_1.setColumns(20);
+		textArea_1.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
+		textArea_1.setRows(5);
+		this.textArea_1
+				.setBorder(new CompoundBorder(new LineBorder(new Color(130, 135, 144)), new EmptyBorder(0, 0, 0, 0)));
+		textArea_1.setFocusable(false);
+
 		JButton btnNewButton = new JButton("Tout effacer");
 		btnNewButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				textArea_1.setText("");
 			}
 		});
 		btnNewButton.setBounds(257, 368, 114, 21);
