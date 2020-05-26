@@ -6,6 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import commun.Message;
+import server.ihm.ServerIHM;
 
 public class Wserver implements Runnable {
 
@@ -14,16 +15,18 @@ public class Wserver implements Runnable {
 	private Thread thread = null;
 	private int nbClients = 0;
 	private int sPort = 3000;
+	private ServerIHM ihm;
 
-	public Wserver() {
+	public Wserver(ServerIHM ihm) {
+		this.ihm = ihm;
 		clients = new Wthread[10];
 
 		try {
 			server = new ServerSocket(sPort);
 			sPort = server.getLocalPort();
+			ihm.textArea_1
+					.append("Server startet. IP : " + InetAddress.getLocalHost() + ", Port : " + server.getLocalPort());
 
-			System.out.println(
-					"Server startet. IP : " + InetAddress.getLocalHost() + ", Port : " + server.getLocalPort());
 			this.startTheard();
 		} catch (IOException ioe) {
 			System.out.println("Can not bind to port : " + sPort + "\nRetrying");
@@ -36,9 +39,10 @@ public class Wserver implements Runnable {
 		// TODO Auto-generated method stub
 		while (thread != null) {
 			try {
-				// System.out.println("waiting for connection ... ");
+				if (this.nbClients == 0) {
+					ihm.textArea_1.append("\nAttente de connection client ...");
+				}
 
-				System.out.println("Hello :" + thread.currentThread().getName());
 				this.addClientThread(server.accept());
 
 			} catch (Exception e) {
@@ -71,9 +75,9 @@ public class Wserver implements Runnable {
 	}
 
 	public synchronized void messageHandler(int ID, Message msg) {
-		System.out.println("new message " + ID);
-		if (msg.type == "CONNECTION") {
-			System.out.print("Connection youpi !!! : " + msg.body);
+		System.out.println("new message " + msg.type + msg.type.equals("CONNECTION"));
+		if (msg.type.equals("CONNECTION")) {
+			ihm.textArea_1.append("\nUn nouveau client s'est connecté au serveur !");
 		}
 
 	}

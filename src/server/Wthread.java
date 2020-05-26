@@ -33,7 +33,7 @@ public class Wthread extends Thread {
 
 				Message msg = (Message) this.input.readObject();
 				System.out.println(msg.body);
-				server.messageHandler(this.port, (Message) this.input.readObject());
+				server.messageHandler(this.port, msg);
 				System.out.println(msg.body);
 
 			} catch (Exception e) {

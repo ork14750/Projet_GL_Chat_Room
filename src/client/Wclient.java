@@ -27,7 +27,7 @@ public class Wclient implements Runnable {
 
 			this.input = new ObjectInputStream(socket.getInputStream());
 
-			this.sendMessage(new Message("CONNECTION ", "hello", "NO", "hii"));
+			this.sendMessage(new Message("CONNECTION", "hello", "NO", "hii"));
 
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
