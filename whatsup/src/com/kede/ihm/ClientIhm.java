@@ -31,6 +31,8 @@ public class ClientIhm {
 	private Wclient client;
 	public Thread clientThr;
 	private File file;
+	
+
 	private String login, password;
 	public  DefaultListModel modelUser;
 	public  DefaultListModel modelGroup;
@@ -418,6 +420,9 @@ public class ClientIhm {
 
 	}
 	
+	public File getFile() {
+		return file;
+	}
 	
 	public void sendAttach() {
 		long size = file.length();

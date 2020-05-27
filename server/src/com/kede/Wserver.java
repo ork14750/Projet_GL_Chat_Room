@@ -128,7 +128,11 @@ public class Wserver implements Runnable {
 		
 		}else if(msg.type.equals("RES_UPLOAD")) {
 			if(!msg.body.equals("KO")) {
-				this.findClientByLogin(msg.recipient).sendMessage(new Message("UPLOAD_RES", msg.sender, msg.body, msg.recipient));
+				String IP = findClientByLogin(msg.sender).getSocket().getInetAddress().getHostAddress();
+				this.findClientByLogin(msg.recipient).sendMessage(new Message("RES_UPLOAD", IP, msg.body, msg.recipient));
+
+			}else {
+				this.findClientByLogin(msg.recipient).sendMessage(new Message("RES_UPLOAD", msg.body, msg.body, msg.recipient));
 
 			}
 		}

@@ -9,6 +9,7 @@ public class Wthread extends Thread {
 
 	private Wserver server;
 	private Socket socket;
+
 	private ObjectInputStream input = null;
 	private ObjectOutputStream output = null;
 	private int ID;
@@ -79,6 +80,11 @@ public class Wthread extends Thread {
 		}
 
 	}
+	
+	public Socket getSocket() {
+		return socket;
+	}
+	
 	public void close() throws IOException {  
     	if (socket != null)    socket.close();
         if (input != null)  input.close();

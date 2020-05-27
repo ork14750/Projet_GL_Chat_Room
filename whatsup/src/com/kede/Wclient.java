@@ -11,6 +11,8 @@ import java.net.UnknownHostException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import com.kede.fileManager.Download;
+import com.kede.fileManager.Upload;
 import com.kede.ihm.ClientIhm;
 
 public class Wclient implements Runnable {
@@ -127,12 +129,41 @@ public class Wclient implements Runnable {
                         
                         JFileChooser jf = new JFileChooser();
                         jf.setSelectedFile(new File(msg.body));
-                        int returnVal = jf.showSaveDialog(ihm.getFrame());
+                        int dialVal = jf.showSaveDialog(ihm.getFrame());
+                        
+                        String to = jf.getSelectedFile().getPath();
+                        
+                        if(to != null && dialVal == JFileChooser.APPROVE_OPTION) {
+                        	Download dwn = new Download(to, ihm);
+                        	Thread thr = new Thread(dwn);
+                        	thr.start();
+                            sendMessage(new Message("RES_UPLOAD", ihm.getLogin(), (""+dwn.getPort()), msg.sender));
+
+                        }else {
+                            sendMessage(new Message("RES_UPLOAD", ihm.getLogin(), "KO", msg.sender));
+
+                        }
                        
                         
                     }else{
-                       
+                        	sendMessage(new Message("RES_UPLOAD", ihm.getLogin(), "KO", msg.sender));
+
                     }
+                }else if(msg.type.equals("RES_UPLOAD")){
+                    if(!msg.body.equals("NO")){
+                        int port  = Integer.parseInt(msg.body);
+                        String addr = msg.sender;
+                        
+                        Upload upl = new Upload(addr, port, ihm.getFile(), ihm);
+                        Thread t = new Thread(upl);
+                        t.start();
+                    }
+                    else{
+                        ihm.logIt("SERVER", "MOI",  msg.sender+" a réfusé(e) le fichier");
+                    }
+                }
+                else{
+                    ihm.logIt("SERVER", "MOI",  "COMMANDE NON RECONUE");
                 }
 			} catch (ClassNotFoundException | IOException e) {
 				// TODO Auto-generated catch block
