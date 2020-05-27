@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<data>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><data>
     <user>
         <login>chris</login>
         <password>kede</password>
@@ -9,4 +8,4 @@
         <password>kede</password>
     </user>
 
-</data>
+<user><login>chrisv</login><password>kede</password></user><user><login>chrisfkn</login><password>kede</password></user></data>

@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -30,7 +32,7 @@ public class ServerIhm {
 	private JLabel lblNewLabel_2;
 	private JTextField textField_1;
 	private JButton btnNewButton_2;
-	private JLabel lblNewLabel_4;
+	public JLabel lblNewLabel_4;
 
 	/**
 	 * Launch the application.
@@ -61,6 +63,13 @@ public class ServerIhm {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		 try {
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()	);
+			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+					| UnsupportedLookAndFeelException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+		}
 		frame.getContentPane().setFont(new Font("Consolas", Font.PLAIN, 10));
 		frame.getContentPane().setBackground(SystemColor.menu);
 		frame.setBounds(100, 100, 639, 451);
@@ -71,6 +80,7 @@ public class ServerIhm {
 		textField.setBounds(123, 51, 69, 19);
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
+		textField.setText("3000");
 
 		JLabel lblNewLabel = new JLabel("Server Logs");
 		lblNewLabel.setForeground(Color.DARK_GRAY);
@@ -83,7 +93,8 @@ public class ServerIhm {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				launchSeverBtn(e);
-				btnNewButton_1.setEnabled(false);
+				
+				
 
 			}
 
@@ -116,7 +127,7 @@ public class ServerIhm {
 		btnNewButton_2.setBounds(334, 9, 154, 21);
 		frame.getContentPane().add(btnNewButton_2);
 
-		JLabel lblNewLabel_3 = new JLabel("Messages echang\u00E9s:");
+		JLabel lblNewLabel_3 = new JLabel("Client connect\u00E9s:");
 		lblNewLabel_3.setFont(new Font("Lucida Bright", Font.PLAIN, 10));
 		lblNewLabel_3.setBounds(10, 87, 114, 13);
 		frame.getContentPane().add(lblNewLabel_3);
@@ -156,9 +167,20 @@ public class ServerIhm {
 	}
 
 	private void launchSeverBtn(ActionEvent e) {
-		server = new Wserver(this);
-		btnNewButton_1.setBackground(Color.GRAY);
-		System.out.println("ok");
+		if(!textField.getText().isEmpty()) {
+			try {
+				server = new Wserver(this, Integer.parseInt(textField.getText()));
+				btnNewButton_1.setEnabled(false);
+				
+				System.out.println("ok");
+			}catch(Exception ex){
+				this.logIt("VEUILLEZ ENTRER UN PORT VALIDE");
+			}
+			
+		}else {
+			this.logIt("VEUILLEZ ENTRER UN PORT VALIDE");
+		}
+		
 	}
 
 	public void logIt(String message) {

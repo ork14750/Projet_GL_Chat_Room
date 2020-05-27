@@ -15,8 +15,11 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import com.kede.Message;
 import com.kede.Wclient;
@@ -36,7 +39,7 @@ public class ClientIhm {
 		return password;
 	}
 
-	private JFrame frame;
+	private JFrame frmWhatsup;
 	private JTextField textField;
 	private JTextField textField_1;
 	public JButton btnNewButton;
@@ -61,7 +64,8 @@ public class ClientIhm {
 			public void run() {
 				try {
 					ClientIhm window = new ClientIhm();
-					window.frame.setVisible(true);
+					window.frmWhatsup.setVisible(true);
+				
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -76,7 +80,7 @@ public class ClientIhm {
 		initialize();
 		modelUser.addElement("TOUT LE MONDE");
 		
-		frame.addWindowListener(new WindowListener() {
+		frmWhatsup.addWindowListener(new WindowListener() {
 
 			@Override
 			public void windowOpened(WindowEvent e) {
@@ -132,30 +136,38 @@ public class ClientIhm {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 713, 466);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		frmWhatsup = new JFrame();
+		 try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()	);
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		frmWhatsup.setTitle("Whatsup");
+		frmWhatsup.setBounds(100, 100, 713, 466);
+		frmWhatsup.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmWhatsup.getContentPane().setLayout(null);
 
 		JLabel lblNewLabel = new JLabel("Host:");
 		lblNewLabel.setBounds(30, 26, 45, 13);
-		frame.getContentPane().add(lblNewLabel);
+		frmWhatsup.getContentPane().add(lblNewLabel);
 
 		textField = new JTextField();
 		textField.setText("127.0.0.1");
 		textField.setBounds(85, 23, 96, 19);
-		frame.getContentPane().add(textField);
+		frmWhatsup.getContentPane().add(textField);
 		textField.setColumns(10);
 
 		textField_1 = new JTextField();
 		textField_1.setText("3000");
 		textField_1.setBounds(285, 23, 96, 19);
-		frame.getContentPane().add(textField_1);
+		frmWhatsup.getContentPane().add(textField_1);
 		textField_1.setColumns(10);
 
 		JLabel lblNewLabel_1 = new JLabel("Port:");
 		lblNewLabel_1.setBounds(205, 26, 45, 13);
-		frame.getContentPane().add(lblNewLabel_1);
+		frmWhatsup.getContentPane().add(lblNewLabel_1);
 
 		btnNewButton = new JButton("Joindre");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -166,26 +178,29 @@ public class ClientIhm {
 			}
 		});
 		btnNewButton.setBounds(430, 22, 85, 21);
-		frame.getContentPane().add(btnNewButton);
+		frmWhatsup.getContentPane().add(btnNewButton);
 
 		textField_2 = new JTextField();
 		textField_2.setBounds(85, 66, 96, 19);
-		frame.getContentPane().add(textField_2);
+		frmWhatsup.getContentPane().add(textField_2);
 		textField_2.setColumns(10);
+		textField_2.setText("chris");
 
 		lblNewLabel_2 = new JLabel("Login:");
 		lblNewLabel_2.setBounds(30, 69, 45, 13);
 
-		frame.getContentPane().add(lblNewLabel_2);
+		frmWhatsup.getContentPane().add(lblNewLabel_2);
 
 		lblNewLabel_3 = new JLabel("Mot de passe:");
 		lblNewLabel_3.setBounds(205, 69, 85, 13);
-		frame.getContentPane().add(lblNewLabel_3);
+		frmWhatsup.getContentPane().add(lblNewLabel_3);
 
 		textField_3 = new JPasswordField();
 		textField_3.setBounds(285, 66, 136, 19);
-		frame.getContentPane().add(textField_3);
+		frmWhatsup.getContentPane().add(textField_3);
 		textField_3.setColumns(10);
+		textField_3.setText("kede");
+
 
 		btnNewButton_1 = new JButton("Se connecter");
 		btnNewButton_1.setEnabled(false);
@@ -196,7 +211,7 @@ public class ClientIhm {
 			}
 		});
 		btnNewButton_1.setBounds(430, 65, 111, 21);
-		frame.getContentPane().add(btnNewButton_1);
+		frmWhatsup.getContentPane().add(btnNewButton_1);
 
 		btnNewButton_2 = new JButton("S'inscrire");
 		btnNewButton_2.setEnabled(false);
@@ -211,11 +226,11 @@ public class ClientIhm {
 		});
 
 		btnNewButton_2.setBounds(571, 65, 104, 21);
-		frame.getContentPane().add(btnNewButton_2);
+		frmWhatsup.getContentPane().add(btnNewButton_2);
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(30, 139, 151, 170);
-		frame.getContentPane().add(scrollPane);
+		frmWhatsup.getContentPane().add(scrollPane);
 
 		list = new JList();
 		scrollPane.setViewportView(list);
@@ -256,11 +271,11 @@ public class ClientIhm {
 		textPane.setLineWrap(true);
 		textPane.setWrapStyleWord(true);
 		textPane.setFont(new java.awt.Font("Consolas", 0, 12));
-		frame.getContentPane().add(textPane);
+		frmWhatsup.getContentPane().add(textPane);
 
 		textField_4 = new JTextField();
 		textField_4.setBounds(205, 341, 364, 19);
-		frame.getContentPane().add(textField_4);
+		frmWhatsup.getContentPane().add(textField_4);
 		textField_4.setColumns(10);
 
 		btnNewButton_3 = new JButton("Envoyer");
@@ -273,7 +288,15 @@ public class ClientIhm {
 			}
 		});
 		btnNewButton_3.setBounds(590, 340, 85, 21);
-		frame.getContentPane().add(btnNewButton_3);
+		frmWhatsup.getContentPane().add(btnNewButton_3);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(205, 370, 464, 20);
+		frmWhatsup.getContentPane().add(separator);
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBounds(29, 116, 646, 13);
+		frmWhatsup.getContentPane().add(separator_1);
 	}
 
 	public void actionJoinServer() {
@@ -328,10 +351,4 @@ public class ClientIhm {
 		client.sendMessage(new Message("MESSAGE", login, body, recipient));
 		
 	}
-	
-	
-	
-	
-	
-
 }

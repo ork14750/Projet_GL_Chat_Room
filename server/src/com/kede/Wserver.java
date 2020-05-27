@@ -14,10 +14,11 @@ public class Wserver implements Runnable {
 	private ServerSocket server = null;
 	private Thread thread = null;
 	private int nbClients = 0;
-	private int sPort = 3000;
+	private int sPort;
 	private ServerIhm ihm;
 
-	public Wserver(ServerIhm ihm) {
+	public Wserver(ServerIhm ihm, int  sPort) {
+		this.sPort = sPort;
 		this.ihm = ihm;
 		clients = new Wthread[10];
 
@@ -79,6 +80,7 @@ public class Wserver implements Runnable {
 		if (msg.type.equals("CONNECTION")) {
 			 clients[this.findClientByID(ID)].sendMessage(new Message("CONNECTION", "SERVER", "OK", msg.sender));
 			 ihm.textArea_1.append("\nUn nouveau client s'est connecté au serveur !");
+			 this.ihm.lblNewLabel_4.setText(Integer.toString(nbClients));
 		
 		}else if (msg.type.equals("LOGIN")) {
 			System.out.println(msg.sender+" "+msg.body);
@@ -166,6 +168,8 @@ public class Wserver implements Runnable {
 	        }
 	    }
 	    this.nbClients--;
+        this.ihm.lblNewLabel_4.setText(Integer.toString(nbClients));
+
 	    try{  
 	      	clientToRemove.close();
 	    }
