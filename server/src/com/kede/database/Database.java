@@ -1,5 +1,6 @@
 package com.kede.database;
 
+//singleton design pattern
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -21,6 +22,8 @@ public class Database {
 	
 	private String dbPath;
 	private File file;
+	
+	private static Database INSTANCE = null;
 	
 	public Database(String name){
 		
@@ -110,6 +113,13 @@ public class Database {
 			return nValue.getNodeValue();
 		  }
 	
+	 public static Database getInstance()
+	    {           
+	        if (INSTANCE == null)
+	        {   INSTANCE = new Database("Database"); 
+	        }
+	        return INSTANCE;
+	    }
 	
 	
 
