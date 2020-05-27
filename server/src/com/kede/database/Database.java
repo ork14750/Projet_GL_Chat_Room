@@ -1,9 +1,16 @@
 package com.kede.database;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -13,14 +20,32 @@ import org.w3c.dom.NodeList;
 public class Database {
 	
 	private String dbPath;
+	private File file;
 	
-	public Database(String dbPath){
-		this.dbPath = dbPath;
+	public Database(String name){
+		
+		Path currentRelativePath = Paths.get("");
+	
+		String s = currentRelativePath.toAbsolutePath().getParent().toString();
+		this.dbPath = s+File.separator+name+".xml";
+		 file = new File(this.dbPath);
+		try {
+			if (file.createNewFile())
+			{
+			    System.out.println("File is created!");
+			} else {
+			    System.out.println("File already exists.");
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(this.dbPath);
 	}
 	
 	public boolean isUser(String login) {
 		try {
-			File file= new File(dbPath);
+			
 			DocumentBuilderFactory dbFct = DocumentBuilderFactory.newInstance();
 		    DocumentBuilder builder;
 			builder = dbFct.newDocumentBuilder();
@@ -43,11 +68,40 @@ public class Database {
 		    
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			System.out.println(e);
 			e.printStackTrace();
 			return false;
 		}
        
 	}
+	
+	   public void addUser(String login, String password){
+	        
+	        try {
+	            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+	            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+	            Document doc = docBuilder.parse(this.dbPath);
+	 
+	            Node data = doc.getFirstChild();
+	            
+	            Element user = doc.createElement("user");
+	            Element newlogin = doc.createElement("login"); newlogin.setTextContent(login);
+	            Element newpass = doc.createElement("password"); newpass.setTextContent(password);
+	            
+	            user.appendChild(newlogin); user.appendChild(newpass); data.appendChild(user);
+	            
+	            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+	            Transformer transformer = transformerFactory.newTransformer();
+	            DOMSource source = new DOMSource(doc);
+	            StreamResult result = new StreamResult(new File(this.dbPath));
+	            transformer.transform(source, result);
+	 
+		   } 
+	           catch(Exception ex){
+			System.out.println(ex);
+		   }
+		}
+	
 	
 	
 	 public static String getValue(String tag, Element el) {
