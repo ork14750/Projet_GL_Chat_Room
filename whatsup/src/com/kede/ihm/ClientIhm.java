@@ -200,6 +200,15 @@ public class ClientIhm {
 
 		btnNewButton_2 = new JButton("S'inscrire");
 		btnNewButton_2.setEnabled(false);
+		btnNewButton_2.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				actionSignup();
+				
+			}
+			
+		});
 
 		btnNewButton_2.setBounds(571, 65, 104, 21);
 		frame.getContentPane().add(btnNewButton_2);
@@ -278,7 +287,7 @@ public class ClientIhm {
 				clientThr.start();
 				client.sendMessage(new Message("CONNECTION", "testUser", "testContent", "SERVER"));
 			} catch (Exception ex) {
-				System.out.println(ex);
+				this.logIt("ERREUR", "moi", "Le serveur n'est pas disponible..");
 			}
 
 		}
@@ -297,6 +306,16 @@ public class ClientIhm {
         
         if(!login.isEmpty() && !password.isEmpty()){
             client.sendMessage(new Message("LOGIN", login, password, "SERVER"));
+        }
+
+	}
+	
+	public void actionSignup() {
+		this.login = this.textField_2.getText();
+    	password = this.textField_3.getText();
+        
+        if(!login.isEmpty() && !password.isEmpty()){
+            client.sendMessage(new Message("SIGNUP", login, password, "SERVER"));
         }
 
 	}

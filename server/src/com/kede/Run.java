@@ -9,7 +9,7 @@ public class Run {
 		// new ServerUI();
 		Database db = Database.getInstance();
 		db.addUser("chri", "kede");
-		System.out.println(db.checkLogin("chridd", "kede"));
+		System.out.println(db.chckLogin("chridd", "kede"));
 	}
 
 }

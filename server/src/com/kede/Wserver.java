@@ -79,8 +79,10 @@ public class Wserver implements Runnable {
 		if (msg.type.equals("CONNECTION")) {
 			 clients[this.findClientByID(ID)].sendMessage(new Message("CONNECTION", "SERVER", "OK", msg.sender));
 			 ihm.textArea_1.append("\nUn nouveau client s'est connecté au serveur !");
+		
 		}else if (msg.type.equals("LOGIN")) {
-			if(Database.getInstance().checkLogin(msg.sender, msg.body)) {
+			System.out.println(msg.sender+" "+msg.body);
+			if(Database.getInstance().chckLogin(msg.sender, msg.body)) {
 				clients[this.findClientByID(ID)].setClientLogin(msg.sender);
 				clients[this.findClientByID(ID)].sendMessage(new Message("LOGIN", "SERVER", "OK", msg.sender));
 				this.diffuseMessage("NEW_USER", "SERVER", msg.sender);
@@ -103,7 +105,25 @@ public class Wserver implements Runnable {
         }else if (msg.type.equals("WINDOW_CLOSED")){
             this.diffuseMessage("SIGNOUT", "SERVER", msg.sender);
             removeClient(ID); 
-	}
+        }else if (msg.type.equals("SIGNUP")) {
+			if(!Database.getInstance().chckLogin(msg.sender, msg.body)) {
+				Database.getInstance().addUser(msg.sender, msg.body);
+				
+				clients[this.findClientByID(ID)].setClientLogin(msg.sender);
+				clients[this.findClientByID(ID)].sendMessage(new Message("SIGNUP", "SERVER", "OK", msg.sender));
+				clients[this.findClientByID(ID)].sendMessage(new Message("LOGIN", "SERVER", "OK", msg.sender));
+				this.diffuseMessage("NEW_USER", "SERVER", msg.sender);
+				this.sendClientList(msg.sender);
+			}else {
+				clients[this.findClientByID(ID)].sendMessage(new Message("SIGNUP", "SERVER", "KO", msg.sender));
+
+			}
+			
+
+		}
+	
+	
+	
 	}
 
 	public ServerIhm getIhm() {

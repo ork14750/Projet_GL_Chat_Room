@@ -107,8 +107,17 @@ public class Wclient implements Runnable {
                     	this.ihm.modelUser.removeElement(msg.body);
                         this.ihm.logIt(msg.sender, "TOUT LE MONDE", msg.body +"s'est déconnecté");
                     }
-                }
+                }else if (msg.type.equals("SIGNUP")) {
+					if (msg.body.equals("OK")) {
+						this.ihm.btnNewButton_1.setEnabled(false);
+						this.ihm.btnNewButton_3.setEnabled(true);
+						this.ihm.btnNewButton_2.setEnabled(false);
+						this.ihm.logIt("SERVER", "MOI", "LOGIN en cours...");
 
+					}else {
+						this.ihm.logIt("SERVER", "MOI", "LOGIN déjà pris!");
+					}
+                }
 			} catch (ClassNotFoundException | IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

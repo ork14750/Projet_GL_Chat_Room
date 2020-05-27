@@ -114,7 +114,7 @@ public class Database {
 		  }
 	 
 	 
-   public boolean chkLogin(String login, String password){
+   public boolean chckLogin(String login, String password){
         
         if(!isUser(login)){ return false; }
         

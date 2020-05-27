@@ -1,4 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><data>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<data>
+    <user>
+        <login>chris</login>
+        <password>kede</password>
+    </user>
+    <user>
+        <login>junior</login>
+        <password>kede</password>
+    </user>
 
-
-<user><login>chri</login><password>kede</password></user><user><login>chris</login><password>kede</password></user><user><login>chri</login><password>kede</password></user><user><login>chri</login><password>kede</password></user><user><login>chri</login><password>kede</password></user><user><login>chri</login><password>kede</password></user><user><login>chri</login><password>kede</password></user><user><login>chri</login><password>kede</password></user></data>
+</data>
