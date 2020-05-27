@@ -78,7 +78,7 @@ public class ClientIhm {
 	 */
 	public ClientIhm() {
 		initialize();
-		modelUser.addElement("TOUT LE MONDE");
+		//modelUser.addElement("TOUT LE MONDE");
 		
 		frmWhatsup.addWindowListener(new WindowListener() {
 
@@ -227,7 +227,7 @@ public class ClientIhm {
 
 		btnNewButton_2.setBounds(571, 65, 104, 21);
 		frmWhatsup.getContentPane().add(btnNewButton_2);
-
+		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(30, 139, 151, 170);
 		frmWhatsup.getContentPane().add(scrollPane);
@@ -240,7 +240,11 @@ public class ClientIhm {
 		scrollPane.setColumnHeaderView(comboBox);
 		comboBox.setModel(new DefaultComboBoxModel(new String[] { "Membres", "Groupes" }));
 		
-		if((String) comboBox.getSelectedItem() == "Membres") list.setModel((modelUser = new DefaultListModel()));
+		if((String) comboBox.getSelectedItem() == "Membres") {
+			list.setModel((modelUser = new DefaultListModel()));
+			modelUser.addElement("TOUT LE MONDE");
+			list.setSelectedIndex(0);
+		}
 		
 		 ActionListener cbActionListener = new ActionListener() {//add actionlistner to listen for change
 	            @Override
@@ -251,6 +255,7 @@ public class ClientIhm {
 	                switch (s) {//check for a match
 	                    case "Membres":
 	                    	list.setModel((modelUser));
+	                    	list.setSelectedIndex(0);
 	                        break;
 	                    case "Groupes":
 	                    	list.setModel((modelGroup = new DefaultListModel()));
@@ -297,6 +302,10 @@ public class ClientIhm {
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setBounds(29, 116, 646, 13);
 		frmWhatsup.getContentPane().add(separator_1);
+		
+		JLabel lblNewLabel_4 = new JLabel("Pi\u00E8ce Jointe : ");
+		lblNewLabel_4.setBounds(205, 388, 69, 13);
+		frmWhatsup.getContentPane().add(lblNewLabel_4);
 	}
 
 	public void actionJoinServer() {
