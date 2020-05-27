@@ -5,6 +5,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import com.kede.database.Database;
 import com.kede.ihm.ServerIhm;
 
 public class Wserver implements Runnable {
@@ -79,11 +80,16 @@ public class Wserver implements Runnable {
 			 clients[this.findClientByID(ID)].sendMessage(new Message("CONNECTION", "SERVER", "OK", msg.sender));
 			 ihm.textArea_1.append("\nUn nouveau client s'est connecté au serveur !");
 		}else if (msg.type.equals("LOGIN")) {
+			if(Database.getInstance().checkLogin(msg.sender, msg.body)) {
+				clients[this.findClientByID(ID)].setClientLogin(msg.sender);
+				clients[this.findClientByID(ID)].sendMessage(new Message("LOGIN", "SERVER", "OK", msg.sender));
+				this.diffuseMessage("NEW_USER", "SERVER", msg.sender);
+				this.sendClientList(msg.sender);
+			}else {
+				clients[this.findClientByID(ID)].sendMessage(new Message("LOGIN", "SERVER", "KO", msg.sender));
 
-			clients[this.findClientByID(ID)].setClientLogin(msg.sender);
-			clients[this.findClientByID(ID)].sendMessage(new Message("LOGIN", "SERVER", "OK", msg.sender));
-			this.diffuseMessage("NEW_USER", "SERVER", msg.sender);
-			this.sendClientList(msg.sender);
+			}
+			
 
 		} else if(msg.type.equals("MESSAGE")){
 			System.out.println(msg);
@@ -101,7 +107,7 @@ public class Wserver implements Runnable {
 	}
 
 	public ServerIhm getIhm() {
-		return this.ihm;
+		return this.ihm;   
 	}
 
 	public int findClientByID(int ID) {

@@ -107,11 +107,45 @@ public class Database {
 	
 	
 	
-	 public static String getValue(String tag, Element el) {
+	 public  String getValue(String tag, Element el) {
 			NodeList nList = el.getElementsByTagName(tag).item(0).getChildNodes();
 		    Node nValue = (Node) nList.item(0);
 			return nValue.getNodeValue();
 		  }
+	 
+	 
+   public boolean chkLogin(String login, String password){
+        
+        if(!isUser(login)){ return false; }
+        
+        try{
+            
+            DocumentBuilderFactory dbFct = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = dbFct.newDocumentBuilder();
+            Document doc = docBuilder.parse(file);
+            doc.getDocumentElement().normalize();
+            
+            NodeList nodeList = doc.getElementsByTagName("user");
+            
+            for (int temp = 0; temp < nodeList.getLength(); temp++) {
+                Node node = nodeList.item(temp);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element el = (Element) node;
+                    if(getValue("login", el).equals(login) && getValue("password", el).equals(password)){
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        catch(Exception ex){
+            return false;
+        }
+    }
+    
+	 
+	 
+	 
 	
 	 public static Database getInstance()
 	    {           

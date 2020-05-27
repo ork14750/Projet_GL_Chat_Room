@@ -59,6 +59,8 @@ public class Wclient implements Runnable {
 						this.ihm.btnNewButton_3.setEnabled(true);
 						this.ihm.logIt("SERVER", "MOI", "CONNECTION REUSSITE, VOUS POUVEZ COMMENCER A CHATTER");
 
+					}else {
+						this.ihm.logIt("SERVER", "MOI", "CONNECTION ECHOUEE, IDENTIFIANTS INCORRECTES");
 					}
 				}else if(msg.type.equals("CONNECTION")) {
 					if(msg.body.equals("OK")) {
