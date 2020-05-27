@@ -3,8 +3,9 @@ package com.kede.ihm;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
-import javax.swing.AbstractListModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -12,19 +13,20 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.kede.Message;
 import com.kede.Wclient;
-import javax.swing.JPasswordField;
 
 public class ClientIhm {
 	private Wclient client;
-	private Thread clientThr;
+	public Thread clientThr;
 	private String login, password;
 	public  DefaultListModel modelUser;
+	public  DefaultListModel modelGroup;
 
 	public String getLogin() {
 		return login;
@@ -73,6 +75,56 @@ public class ClientIhm {
 	public ClientIhm() {
 		initialize();
 		modelUser.addElement("TOUT LE MONDE");
+		
+		frame.addWindowListener(new WindowListener() {
+
+			@Override
+			public void windowOpened(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// TODO Auto-generated method stub
+				try{ client.sendMessage(new Message("WINDOW_CLOSED", login, ".bye", "SERVER")); clientThr.stop();  }catch(Exception ex){}
+				
+			}
+
+			@Override
+			public void windowClosed(WindowEvent e) {
+				// TODO Auto-generated method stub
+				try{ client.sendMessage(new Message("WINDOW_CLOSED", login, "closed", "SERVER")); clientThr.stop();  }catch(Exception ex){}
+
+			}
+
+			@Override
+			public void windowIconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowActivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		
+		
 	}
 	
 
@@ -158,11 +210,37 @@ public class ClientIhm {
 
 		list = new JList();
 		scrollPane.setViewportView(list);
-		list.setModel((modelUser = new DefaultListModel()));
+		
 
 		comboBox = new JComboBox();
 		scrollPane.setColumnHeaderView(comboBox);
-		comboBox.setModel(new DefaultComboBoxModel(new String[] { "Groupes", "Membres" }));
+		comboBox.setModel(new DefaultComboBoxModel(new String[] { "Membres", "Groupes" }));
+		
+		if((String) comboBox.getSelectedItem() == "Membres") list.setModel((modelUser = new DefaultListModel()));
+		
+		 ActionListener cbActionListener = new ActionListener() {//add actionlistner to listen for change
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+
+	                String s = (String) comboBox.getSelectedItem();//get the selected item
+
+	                switch (s) {//check for a match
+	                    case "Membres":
+	                    	list.setModel((modelUser));
+	                        break;
+	                    case "Groupes":
+	                    	list.setModel((modelGroup = new DefaultListModel()));
+	                        break;
+	               
+	                    default:
+	                       
+	                        break;
+	                }
+	            }
+	        };
+	        
+	    comboBox.addActionListener(cbActionListener);    
+
 
 		textPane = new JTextArea();
 		textPane.setBounds(205, 139, 470, 170);

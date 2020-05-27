@@ -94,7 +94,10 @@ public class Wserver implements Runnable {
                 findClientByLogin(msg.recipient).sendMessage(new Message(msg.type, msg.sender, msg.body, msg.recipient));
                 clients[findClientByID(ID)].sendMessage(new Message(msg.type, msg.sender, msg.body, msg.recipient));
             }
-        }
+        }else if (msg.type.equals("WINDOW_CLOSED")){
+            this.diffuseMessage("SIGNOUT", "SERVER", msg.sender);
+            removeClient(ID); 
+	}
 	}
 
 	public ServerIhm getIhm() {
@@ -126,7 +129,26 @@ public class Wserver implements Runnable {
 		}
 	}
 	
-	public synchronized void removeClient(int id) {
+	public synchronized void removeClient(int ID) {
+		int position = this.findClientByID(ID);
+		if (position >= 0){  
+			Wthread clientToRemove = clients[position];
+            this.ihm.textArea_1.append("\nRemoving client thread " + ID + " at " + position);
+	    if (position < this.nbClients-1){
+                for (int i = position+1; i < this.nbClients; i++){
+                    clients[i-1] = clients[i];
+	        }
+	    }
+	    this.nbClients--;
+	    try{  
+	      	clientToRemove.close();
+	    }
+	    catch(IOException ioe){  
+	      	this.ihm.textArea_1.append("\nError closing thread: " + ioe); 
+	    }
+	    clientToRemove.stop(); 
+	}
+		
 		
 	}
 	

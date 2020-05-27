@@ -92,6 +92,19 @@ public class Wclient implements Runnable {
                     }
                                             
               
+                } else if(msg.type.equals("SIGNOUT")){
+                    if(msg.body.equals(this.ihm.getLogin())){
+                        this.ihm.logIt("SERVER", "MOI", "Au revoir !");
+                        for(int i = 1; i < this.ihm.modelUser.size(); i++){
+                            this.ihm.modelUser.removeElementAt(i);
+                        }
+                        
+                        this.ihm.clientThr.stop();
+                    }
+                    else{
+                    	this.ihm.modelUser.removeElement(msg.body);
+                        this.ihm.logIt(msg.sender, "TOUT LE MONDE", msg.body +"s'est déconnecté");
+                    }
                 }
 
 			} catch (ClassNotFoundException | IOException e) {

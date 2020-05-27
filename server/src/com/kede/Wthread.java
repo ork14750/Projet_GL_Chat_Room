@@ -56,6 +56,9 @@ public class Wthread extends Thread {
 			this.output.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
+			System.out.println(ID + " ERROR reading: " + e.getMessage());
+            server.removeClient(ID);
+            stop();
 			e.printStackTrace();
 		}
 
@@ -76,5 +79,10 @@ public class Wthread extends Thread {
 		}
 
 	}
+	public void close() throws IOException {  
+    	if (socket != null)    socket.close();
+        if (input != null)  input.close();
+        if (output != null) output.close();
+    }
 
 }
