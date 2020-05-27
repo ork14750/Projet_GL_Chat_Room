@@ -1,11 +1,15 @@
 package com.kede;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 import com.kede.ihm.ClientIhm;
 
@@ -117,6 +121,18 @@ public class Wclient implements Runnable {
 					}else {
 						this.ihm.logIt("SERVER", "MOI", "LOGIN déjà pris!");
 					}
+                }else if(msg.type.equals("REQ_UPLOAD")){
+                    
+                    if(JOptionPane.showConfirmDialog(ihm.getFrame(), ("Accepter '"+msg.body+"' de "+msg.sender+" ?")) == 0){
+                        
+                        JFileChooser jf = new JFileChooser();
+                        jf.setSelectedFile(new File(msg.body));
+                        int returnVal = jf.showSaveDialog(ihm.getFrame());
+                       
+                        
+                    }else{
+                       
+                    }
                 }
 			} catch (ClassNotFoundException | IOException e) {
 				// TODO Auto-generated catch block

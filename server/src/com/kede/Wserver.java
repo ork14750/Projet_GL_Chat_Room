@@ -122,6 +122,15 @@ public class Wserver implements Runnable {
 			}
 			
 
+		}else if(msg.type.equals("REQ_UPLOAD")) {
+			this.findClientByLogin(msg.recipient).sendMessage(new Message("REQ_UPLOAD", msg.sender, msg.body, msg.recipient));
+			System.out.println(msg);
+		
+		}else if(msg.type.equals("RES_UPLOAD")) {
+			if(!msg.body.equals("KO")) {
+				this.findClientByLogin(msg.recipient).sendMessage(new Message("UPLOAD_RES", msg.sender, msg.body, msg.recipient));
+
+			}
 		}
 	
 	

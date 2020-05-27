@@ -1,9 +1,5 @@
 package com.kede;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.jupiter.api.Test;
-
 class Tests {
 
 	@Test

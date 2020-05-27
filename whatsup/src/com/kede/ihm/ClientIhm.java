@@ -1,15 +1,18 @@
 package com.kede.ihm;
 
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -27,6 +30,7 @@ import com.kede.Wclient;
 public class ClientIhm {
 	private Wclient client;
 	public Thread clientThr;
+	private File file;
 	private String login, password;
 	public  DefaultListModel modelUser;
 	public  DefaultListModel modelGroup;
@@ -54,6 +58,9 @@ public class ClientIhm {
 	private JComboBox comboBox;
 	public JButton btnNewButton_3;
 	private JList list;
+	
+	private JLabel lblNewLabel_4;
+	private JButton btnNewButton_5;
 
 	/**
 	 * Launch the application.
@@ -145,7 +152,7 @@ public class ClientIhm {
 			e1.printStackTrace();
 		}
 		frmWhatsup.setTitle("Whatsup");
-		frmWhatsup.setBounds(100, 100, 713, 466);
+		frmWhatsup.setBounds(100, 100, 713, 484);
 		frmWhatsup.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmWhatsup.getContentPane().setLayout(null);
 
@@ -296,18 +303,51 @@ public class ClientIhm {
 		frmWhatsup.getContentPane().add(btnNewButton_3);
 		
 		JSeparator separator = new JSeparator();
-		separator.setBounds(205, 370, 464, 20);
+		separator.setBounds(205, 370, 457, 13);
 		frmWhatsup.getContentPane().add(separator);
 		
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setBounds(29, 116, 646, 13);
 		frmWhatsup.getContentPane().add(separator_1);
 		
-		JLabel lblNewLabel_4 = new JLabel("Pi\u00E8ce Jointe : ");
-		lblNewLabel_4.setBounds(205, 388, 69, 13);
+		lblNewLabel_4 = new JLabel("");
+		lblNewLabel_4.setBounds(326, 388, 141, 13);
 		frmWhatsup.getContentPane().add(lblNewLabel_4);
+		
+		JButton btnNewButton_4 = new JButton("Piece-jointe");
+		btnNewButton_4.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				actionChooseAttach();
+			}
+			
+		});
+		
+		btnNewButton_4.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		btnNewButton_4.setBounds(205, 384, 111, 21);
+		frmWhatsup.getContentPane().add(btnNewButton_4);
+		
+		btnNewButton_5 = new JButton("Envoie PJ");
+		btnNewButton_5.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				sendAttach();
+				
+			}
+			
+		});
+		btnNewButton_5.setVisible(false);
+		btnNewButton_5.setBounds(484, 384, 85, 21);
+		frmWhatsup.getContentPane().add(btnNewButton_5);
 	}
 
+	public JFrame getFrame() {
+		return this.frmWhatsup;
+	}
+	
 	public void actionJoinServer() {
 		String host = this.textField.getText();
 		int port = Integer.parseInt(this.textField_1.getText());
@@ -359,5 +399,33 @@ public class ClientIhm {
 		String recipient = this.list.getSelectedValue().toString();
 		client.sendMessage(new Message("MESSAGE", login, body, recipient));
 		
+	}
+	
+	public void actionChooseAttach() {
+        JFileChooser chooser = new JFileChooser();
+        chooser.showDialog(this.frmWhatsup, "Choisissez un ficher");
+        file = chooser.getSelectedFile();
+        
+        if(file!=null){
+        	if(!file.getName().isEmpty()) {
+        		  String filePath = file.getName();
+        		  this.lblNewLabel_4.setText(filePath);
+        			btnNewButton_5.setVisible(true);
+
+        	} 
+          
+        }    
+
+	}
+	
+	
+	public void sendAttach() {
+		long size = file.length();
+        if(size < 120 * 1024 * 1024){
+            client.sendMessage(new Message("REQ_UPLOAD", login, file.getName(), list.getSelectedValue().toString()));
+        }
+        else{
+            this.logIt("Erreur", "Moi", "Le fichier est trop lourd !");
+        }
 	}
 }
