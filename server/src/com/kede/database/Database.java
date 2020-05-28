@@ -49,7 +49,10 @@ public class Database {
 	public boolean isUser(String login) {
 		try {
 			
+
 			DocumentBuilderFactory dbFct = DocumentBuilderFactory.newInstance();
+	        dbFct.setIgnoringElementContentWhitespace(true);
+
 		    DocumentBuilder builder;
 			builder = dbFct.newDocumentBuilder();
 			Document doc = builder.parse(file);
@@ -60,6 +63,7 @@ public class Database {
 		    
 		    for(int i =0; i< node.getLength(); i++) {
 		    	Node item = node.item(i);
+		    	System.out.println(item.getTextContent());
 		    	if(item.getNodeType() == Node.ELEMENT_NODE) {
 		    		Element el = (Element) item;
 		    		if(getValue("login", el).equals(login)){
@@ -81,8 +85,10 @@ public class Database {
 	   public void addUser(String login, String password){
 	        
 	        try {
-	            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-	            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+	            DocumentBuilderFactory dFct = DocumentBuilderFactory.newInstance();
+		        dFct.setIgnoringElementContentWhitespace(true);
+	            DocumentBuilder docBuilder = dFct.newDocumentBuilder();
+	            
 	            Document doc = docBuilder.parse(this.dbPath);
 	 
 	            Node data = doc.getFirstChild();
@@ -129,7 +135,7 @@ public class Database {
 	            group.appendChild(groupName); 
 	           
 	            for(int i= 0; i<groupUser.length; i++) {
-	            	Element user = doc.createElement("user");
+	            	Element user = doc.createElement("userLogin");
 	            	user.setTextContent(""+groupUser[i]);
 	            	System.out.println(user);
 		            group.appendChild(user);
@@ -161,7 +167,7 @@ public class Database {
 	 public  String getValue(String tag, Element el) {
 			NodeList nList = el.getElementsByTagName(tag).item(0).getChildNodes();
 		    Node nValue = (Node) nList.item(0);
-			return nValue.getNodeValue();
+			return nValue.getNodeValue().replaceAll("\\s","");
 		  }
 	 
 	 
@@ -170,8 +176,10 @@ public class Database {
         if(!isUser(login)){ return false; }
         
         try{
-            
+        	            
             DocumentBuilderFactory dbFct = DocumentBuilderFactory.newInstance();
+	        dbFct.setIgnoringElementContentWhitespace(true);
+
             DocumentBuilder docBuilder = dbFct.newDocumentBuilder();
             Document doc = docBuilder.parse(file);
             doc.getDocumentElement().normalize();

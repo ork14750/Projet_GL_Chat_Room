@@ -87,6 +87,7 @@ public class ClientIhm {
 	 * Create the application.
 	 */
 	public ClientIhm() {
+		
 		initialize();
 		//modelUser.addElement("TOUT LE MONDE");
 		
@@ -349,6 +350,7 @@ public class ClientIhm {
 		JButton btnNewButton_6 = new JButton("Nouveau groupe");
 		btnNewButton_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				actionOpenGroupIhm();
 			}
 		});
 		btnNewButton_6.setBounds(30, 340, 111, 21);
@@ -428,6 +430,16 @@ public class ClientIhm {
         }    
 
 	}
+	public void actionOpenGroupIhm() {
+		
+		 this.modelUser.removeElement("TOUT LE MONDE");
+		 GroupIhm gIhm = new GroupIhm(this);
+		 gIhm.getFrame().setLocation(this.getFrame().getLocation());
+	     gIhm.getFrame().setVisible(true);
+		 System.out.println("grou");
+         gIhm.getFrame().setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+         //gIhm.getFrame().setVisible(false);
+	}
 	
 	public File getFile() {
 		return file;
@@ -442,4 +454,6 @@ public class ClientIhm {
             this.logIt("Erreur", "Moi", "Le fichier est trop lourd !");
         }
 	}
+	
+	
 }

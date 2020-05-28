@@ -15,5 +15,38 @@
 			kede
 		</password>
 	</user>
-	
-<group><name>test</name><createdBy>chris</createdBy><user>toto</user><user>juttonior</user><user>ketotkde</user></group></data>
+	<group>
+		<createdBy>
+			chris
+		</createdBy>
+		<name>
+			test
+		</name>
+		<userLogin>
+			toto
+		</userLogin>
+		<userLogin>
+			juttonior
+		</userLogin>
+		<userLogin>
+			ketotkde
+		</userLogin>
+	</group>
+	<group>
+		<createdBy>
+			chris
+		</createdBy>
+		<name>
+			test
+		</name>
+		<userLogin>
+			toto
+		</userLogin>
+		<userLogin>
+			juttonior
+		</userLogin>
+		<userLogin>
+			ketotkde
+		</userLogin>
+	</group>
+<user><login>c</login><password>kede</password></user></data>
