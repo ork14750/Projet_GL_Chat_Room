@@ -9,8 +9,16 @@ public class Run {
 		// new ServerUI();
 		Database db = Database.getInstance();
 		String[] groupUser = {"toto","juttonior", "ketotkde"};
-		System.out.println(db.chckLogin("chris", "kede"));
-		//db.addGroup("test", "chris",groupUser );
+		
+		//System.out.println(db.chckLogin("chris", "kede"));
+		//db.addGroup("test2", "chris",groupUser );
+		//db.addGroup("test5", "chris",groupUser );
+		System.out.println(db.getUserGroups("toto"));
+		System.out.println(db.getUserGroups("junior"));
+		System.out.println(db.getUserGroups("chris"));
+
+
+		
 		
 	}
 

@@ -60,10 +60,16 @@ public class Wclient implements Runnable {
 				
 
 				if (msg.type.equals("LOGIN")) {
-					if (msg.body.equals("OK")) {
+					if (!msg.body.equals("KO")) {
 						this.ihm.btnNewButton_1.setEnabled(false);
 						this.ihm.btnNewButton_3.setEnabled(true);
 						this.ihm.logIt("SERVER", "MOI", "CONNECTION REUSSITE, VOUS POUVEZ COMMENCER A CHATTER");
+						String[] groups = msg.body.split(";");
+						for(String s: groups) {
+							this.ihm.modelGroup.addElement(s);
+						}
+						System.out.print("Model "+this.ihm.modelGroup+"  ");
+
 
 					}else {
 						this.ihm.logIt("SERVER", "MOI", "CONNECTION ECHOUEE, IDENTIFIANTS INCORRECTES");

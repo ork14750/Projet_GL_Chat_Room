@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><data>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<data>
 	<user>
 		<login>
 			chris
@@ -20,16 +21,16 @@
 			chris
 		</createdBy>
 		<name>
-			test
+			fkf
 		</name>
 		<userLogin>
-			toto
+			chris
 		</userLogin>
 		<userLogin>
-			juttonior
+			tot
 		</userLogin>
 		<userLogin>
-			ketotkde
+			junior
 		</userLogin>
 	</group>
 	<group>
@@ -43,10 +44,11 @@
 			toto
 		</userLogin>
 		<userLogin>
-			juttonior
+		junior
 		</userLogin>
 		<userLogin>
-			ketotkde
+			ketotyeankde
 		</userLogin>
 	</group>
-<user><login>c</login><password>kede</password></user></data>
+
+</data>

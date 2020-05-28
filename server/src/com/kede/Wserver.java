@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.kede.database.Database;
 import com.kede.ihm.ServerIhm;
@@ -85,8 +87,11 @@ public class Wserver implements Runnable {
 		}else if (msg.type.equals("LOGIN")) {
 			System.out.println(msg.sender+" "+msg.body);
 			if(Database.getInstance().chckLogin(msg.sender, msg.body)) {
+				String clientGroup = Database.getInstance().getUserGroups(msg.sender);
+				
 				clients[this.findClientByID(ID)].setClientLogin(msg.sender);
-				clients[this.findClientByID(ID)].sendMessage(new Message("LOGIN", "SERVER", "OK", msg.sender));
+				clients[this.findClientByID(ID)].sendMessage(new Message("LOGIN", "SERVER", clientGroup, msg.sender));
+				
 				this.diffuseMessage("NEW_USER", "SERVER", msg.sender);
 				this.sendClientList(msg.sender);
 			}else {
@@ -199,6 +204,14 @@ public class Wserver implements Runnable {
 		 for(int i = 0; i < nbClients; i++){
 	            findClientByLogin(user).sendMessage(new Message("NEW_USER", "SERVER", clients[i].getClientLogin(), user));
 	        }
+	}
+	
+	public String arrToString(List<String> l) {
+		String res ="";
+		for(int i =0; i<l.size(); i++) {
+			res+=l.get(i)+";";
+		}
+		return res.substring(0, res.length() -1);
 	}
 
 	@SuppressWarnings("deprecation")

@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -63,7 +65,7 @@ public class Database {
 		    
 		    for(int i =0; i< node.getLength(); i++) {
 		    	Node item = node.item(i);
-		    	System.out.println(item.getTextContent());
+		    	
 		    	if(item.getNodeType() == Node.ELEMENT_NODE) {
 		    		Element el = (Element) item;
 		    		if(getValue("login", el).equals(login)){
@@ -137,7 +139,6 @@ public class Database {
 	            for(int i= 0; i<groupUser.length; i++) {
 	            	Element user = doc.createElement("userLogin");
 	            	user.setTextContent(""+groupUser[i]);
-	            	System.out.println(user);
 		            group.appendChild(user);
 
 	            }
@@ -167,7 +168,7 @@ public class Database {
 	 public  String getValue(String tag, Element el) {
 			NodeList nList = el.getElementsByTagName(tag).item(0).getChildNodes();
 		    Node nValue = (Node) nList.item(0);
-			return nValue.getNodeValue().replaceAll("\\s","");
+			return formatXml(nValue.getNodeValue());
 		  }
 	 
 	 
@@ -202,9 +203,71 @@ public class Database {
         }
     }
     
+   public String getUserGroups(String login){
+	   try {
+			System.out.println("group login "+login);
+		   List<String> group =  new ArrayList<>();
+
+			DocumentBuilderFactory dbFct = DocumentBuilderFactory.newInstance();
+	        dbFct.setIgnoringElementContentWhitespace(true);
+
+		    DocumentBuilder builder;
+			builder = dbFct.newDocumentBuilder();
+			Document doc = builder.parse(file);
+		    doc.getDocumentElement().normalize();
+		         
+		    NodeList node = doc.getElementsByTagName("group");
+		    
+		    
+		    for(int i =0; i< node.getLength(); i++) {
+		    	
+		    	Node item = node.item(i);
+		    	
+		    	if(item.getNodeType() == Node.ELEMENT_NODE) {
+		    		Element el = (Element) item;
+		    		//System.out.println(getValue("userLogin", el));
+		    		if(userInGroup("userLogin", el, login)){
+	                        group.add(getValue("name", el));
+	                        
+	                   }
+		    	}
+		    }
+		    return this.arrToString(group);
+		    
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println(e);
+			//e.printStackTrace();
+			return null;
+		}
+   }
 	 
+   public  boolean userInGroup(String tag, Element el,String login) {
+	   boolean isIn = false;
+	   NodeList t = el.getElementsByTagName(tag);
+	 	
+	 	for(int i=0; i<t.getLength(); i++) {
+	 		if(formatXml(t.item(i).getTextContent()).equals(login)) {
+	 			
+	 			isIn = true;
+	 			break;
+	 		};
+	 	}
+		return  isIn;
+	  }
 	 
+   	
+   public String formatXml(String s) {
+	   return s.replace("\n", "").replace("\r", "").trim();
+   }
 	 
+	public String arrToString(List<String> l) {
+		String res ="";
+		for(int i =0; i<l.size(); i++) {
+			res+=l.get(i)+";";
+		}
+		return res.substring(0, res.length() -1);
+	}
 	
 	 public static Database getInstance()
 	    {           
@@ -214,6 +277,7 @@ public class Database {
 	        return INSTANCE;
 	    }
 	
+	 
 	
 
 }

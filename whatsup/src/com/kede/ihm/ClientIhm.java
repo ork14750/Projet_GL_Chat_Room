@@ -87,6 +87,7 @@ public class ClientIhm {
 	 * Create the application.
 	 */
 	public ClientIhm() {
+		this.modelGroup = new DefaultListModel();
 		
 		initialize();
 		//modelUser.addElement("TOUT LE MONDE");
@@ -255,6 +256,9 @@ public class ClientIhm {
 			list.setModel((modelUser = new DefaultListModel()));
 			modelUser.addElement("TOUT LE MONDE");
 			list.setSelectedIndex(0);
+		}else {
+			list.setModel(modelGroup); 
+			list.setSelectedIndex(0);
 		}
 		
 		 ActionListener cbActionListener = new ActionListener() {//add actionlistner to listen for change
@@ -269,7 +273,8 @@ public class ClientIhm {
 	                    	list.setSelectedIndex(0);
 	                        break;
 	                    case "Groupes":
-	                    	list.setModel((modelGroup = new DefaultListModel()));
+	                    	list.setModel(modelGroup);
+	                    	list.setSelectedIndex(0);
 	                        break;
 	               
 	                    default:
@@ -409,8 +414,14 @@ public class ClientIhm {
 	    
 	public void actionSendMessage() {
 		String body = this.textField_4.getText();
-		String recipient = this.list.getSelectedValue().toString();
-		client.sendMessage(new Message("MESSAGE", login, body, recipient));
+		try {
+			String recipient = this.list.getSelectedValue().toString();
+			client.sendMessage(new Message("MESSAGE", login, body, recipient));
+		}catch(Exception e) {
+			this.logIt("Erreur", "moi", "Veuillez Selectionner un destinataire");
+			System.out.println(e);
+		}
+		
 		
 	}
 	
