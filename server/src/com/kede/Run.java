@@ -8,8 +8,9 @@ public class Run {
 		// new Wserver();
 		// new ServerUI();
 		Database db = Database.getInstance();
-		db.addUser("chri", "kede");
-		System.out.println(db.chckLogin("chridd", "kede"));
+		String[] groupUser = {"toto","juttonior", "ketotkde"};
+		db.addGroup("test", "chris",groupUser );
+		
 	}
 
 }

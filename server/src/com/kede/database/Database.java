@@ -104,6 +104,57 @@ public class Database {
 			System.out.println(ex);
 		   }
 		}
+	   
+	   
+	   
+	   
+	   public void addGroup(String name, String createddBy, String[] groupUser){
+	        
+	        try {
+	            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+	            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+	            Document doc = docBuilder.parse(this.dbPath);
+	 
+	            Node data = doc.getFirstChild();
+	            
+	            Element group = doc.createElement("group");
+	            
+	            Element createdBy = doc.createElement("createdBy");
+	            createdBy.setTextContent(createddBy);
+	            
+	            Element groupName = doc.createElement("name"); 
+	            groupName.setTextContent(name);
+	            
+	            group.appendChild(createdBy);
+	            group.appendChild(groupName); 
+	           
+	            for(int i= 0; i<groupUser.length; i++) {
+	            	Element user = doc.createElement("user");
+	            	user.setTextContent(""+groupUser[i]);
+	            	System.out.println(user);
+		            group.appendChild(user);
+
+	            }
+	            System.out.println(group);
+	            
+	            data.appendChild(group);
+	            
+	            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+	            Transformer transformer = transformerFactory.newTransformer();
+	            DOMSource source = new DOMSource(doc);
+	            StreamResult result = new StreamResult(new File(this.dbPath));
+	            transformer.transform(source, result);
+	 
+		   } 
+	           catch(Exception ex){
+			System.out.println(ex);
+		   }
+		}
+	   
+	   
+	   
+	   
+	   
 	
 	
 	

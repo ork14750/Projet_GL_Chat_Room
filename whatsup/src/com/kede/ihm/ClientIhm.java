@@ -26,6 +26,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import com.kede.Message;
 import com.kede.Wclient;
+import java.awt.Button;
 
 public class ClientIhm {
 	private Wclient client;
@@ -344,6 +345,14 @@ public class ClientIhm {
 		btnNewButton_5.setVisible(false);
 		btnNewButton_5.setBounds(484, 384, 85, 21);
 		frmWhatsup.getContentPane().add(btnNewButton_5);
+		
+		JButton btnNewButton_6 = new JButton("Nouveau groupe");
+		btnNewButton_6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnNewButton_6.setBounds(30, 340, 111, 21);
+		frmWhatsup.getContentPane().add(btnNewButton_6);
 	}
 
 	public JFrame getFrame() {
