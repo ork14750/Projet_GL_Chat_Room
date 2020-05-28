@@ -86,18 +86,25 @@ public class Wserver implements Runnable {
 		
 		}else if (msg.type.equals("LOGIN")) {
 			System.out.println(msg.sender+" "+msg.body);
-			if(Database.getInstance().chckLogin(msg.sender, msg.body)) {
-				String clientGroup = Database.getInstance().getUserGroups(msg.sender);
+			if(this.findClientByLogin(msg.sender) == null) {
+				if(Database.getInstance().chckLogin(msg.sender, msg.body)) {
+					String clientGroup = Database.getInstance().getUserGroups(msg.sender);
+					
+					clients[this.findClientByID(ID)].setClientLogin(msg.sender);
+					clients[this.findClientByID(ID)].sendMessage(new Message("LOGIN", "SERVER", clientGroup, msg.sender));
+					
+					this.diffuseMessage("NEW_USER", "SERVER", msg.sender);
+					this.sendClientList(msg.sender);
+				}else {
+					clients[this.findClientByID(ID)].sendMessage(new Message("LOGIN", "SERVER", "KO", msg.sender));
+
+				}
 				
-				clients[this.findClientByID(ID)].setClientLogin(msg.sender);
-				clients[this.findClientByID(ID)].sendMessage(new Message("LOGIN", "SERVER", clientGroup, msg.sender));
-				
-				this.diffuseMessage("NEW_USER", "SERVER", msg.sender);
-				this.sendClientList(msg.sender);
 			}else {
 				clients[this.findClientByID(ID)].sendMessage(new Message("LOGIN", "SERVER", "KO", msg.sender));
 
 			}
+			
 			
 
 		} else if(msg.type.equals("MESSAGE")){
@@ -140,7 +147,22 @@ public class Wserver implements Runnable {
 				this.findClientByLogin(msg.recipient).sendMessage(new Message("RES_UPLOAD", msg.body, msg.body, msg.recipient));
 
 			}
-		}
+		}else if(msg.type.equals("MESSAGE_GROUP")){
+				
+				List<String> users = Database.getInstance().getUsersByGroup(msg.recipient);
+				
+				for(int i = 0; i<users.size(); i++) {
+					System.out.println("User login "+ users.get(i));
+					Wthread curr_user = findClientByLogin(users.get(i));
+					if(curr_user != null) {
+						System.out.println("User find "+ i);
+						curr_user.sendMessage(new Message(msg.type, msg.sender, msg.body, msg.recipient));
+					}
+				}
+                
+          
+            
+        }
 	
 	
 	

@@ -72,7 +72,7 @@ public class Wclient implements Runnable {
 
 
 					}else {
-						this.ihm.logIt("SERVER", "MOI", "CONNECTION ECHOUEE, IDENTIFIANTS INCORRECTES");
+						this.ihm.logIt("SERVER", "MOI", "CONNECTION ECHOUEE, IDENTIFIANTS INCORRECTES OU VOUS ETES DEJA CONNECTES!");
 					}
 				}else if(msg.type.equals("CONNECTION")) {
 					if(msg.body.equals("OK")) {
@@ -167,6 +167,13 @@ public class Wclient implements Runnable {
                     else{
                         ihm.logIt("SERVER", "MOI",  msg.sender+" a réfusé(e) le fichier");
                     }
+                }else if(msg.type.equals("MESSAGE_GROUP")){
+                	
+                	
+                	String from = msg.sender;
+                	if(msg.body.equals(this.ihm.getLogin())) from = "moi";
+                	ihm.logIt("["+msg.recipient+"] "+from, msg.recipient, msg.body);
+                	
                 }
                 else{
                     ihm.logIt("SERVER", "MOI",  "COMMANDE NON RECONUE");

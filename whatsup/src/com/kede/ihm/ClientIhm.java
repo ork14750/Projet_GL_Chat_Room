@@ -415,8 +415,15 @@ public class ClientIhm {
 	public void actionSendMessage() {
 		String body = this.textField_4.getText();
 		try {
-			String recipient = this.list.getSelectedValue().toString();
-			client.sendMessage(new Message("MESSAGE", login, body, recipient));
+			if(this.comboBox.getSelectedItem() =="Groupes") {
+				String recipient = this.list.getSelectedValue().toString();
+				client.sendMessage(new Message("MESSAGE_GROUP", login, body, recipient));
+				
+			}else {
+				String recipient = this.list.getSelectedValue().toString();
+				client.sendMessage(new Message("MESSAGE", login, body, recipient));
+			}
+			
 		}catch(Exception e) {
 			this.logIt("Erreur", "moi", "Veuillez Selectionner un destinataire");
 			System.out.println(e);

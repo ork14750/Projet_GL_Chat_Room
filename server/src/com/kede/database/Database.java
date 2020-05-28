@@ -202,6 +202,8 @@ public class Database {
             return false;
         }
     }
+   
+  
     
    public String getUserGroups(String login){
 	   try {
@@ -241,6 +243,75 @@ public class Database {
 			return null;
 		}
    }
+   
+   public  List<String> getUsersByGroup(String name){
+	   try {
+		   
+			System.out.println("group name "+name);
+		   List <String> user =  new ArrayList<>();
+		   
+			DocumentBuilderFactory dbFct = DocumentBuilderFactory.newInstance();
+	        dbFct.setIgnoringElementContentWhitespace(true);
+
+		    DocumentBuilder builder;
+			builder = dbFct.newDocumentBuilder();
+			Document doc = builder.parse(file);
+		    doc.getDocumentElement().normalize();
+		         
+		    NodeList node = doc.getElementsByTagName("group");
+		    
+		    
+		    
+		    for(int i =0; i< node.getLength(); i++) {
+		    	
+		    	Node item = node.item(i);
+		    	
+		    	if(item.getNodeType() == Node.ELEMENT_NODE) {
+		    		Element el = (Element) item;
+		    		
+		    		//System.out.println(getValue("userLogin", el));
+		    		if(isMatchGroup("name", el, name)){
+		    			System.out.println("c'est ok");
+	                        user = this.findUsersInGroup("userLogin", el, name);
+	                        
+	                   }
+		    	}
+		    }
+		    return user;
+		    
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.out.println(e);
+			//e.printStackTrace();
+			return null;
+		}
+   }
+   
+   public  boolean isMatchGroup(String tag, Element el,String login) {
+	   boolean isIn = false;
+	   NodeList t = el.getElementsByTagName(tag);
+	 	
+	 	for(int i=0; i<t.getLength(); i++) {
+	 		if(formatXml(t.item(i).getTextContent()).equals(login)) {
+	 			
+	 			isIn = true;
+	 			break;
+	 		};
+	 	}
+		return  isIn;
+	  }
+   
+   private  List<String> findUsersInGroup(String tag, Element el,String login) {
+	                  
+	   NodeList t = el.getElementsByTagName(tag);
+	   List <String> res = new ArrayList();
+	 	for(int i=0; i<t.getLength(); i++) {
+	 		res.add(formatXml(t.item(i).getTextContent()));
+	 			
+	 		
+	 	}
+		return  res;
+	  }
 	 
    public  boolean userInGroup(String tag, Element el,String login) {
 	   boolean isIn = false;
