@@ -27,11 +27,8 @@ public class ServerIhm {
 	private JFrame frame;
 	private JTextField textField;
 	public JTextArea textArea_1;
-	private JButton btnNewButton_1;
+	public JButton btnNewButton_1;
 	private JLabel lblNewLabel_1;
-	private JLabel lblNewLabel_2;
-	private JTextField textField_1;
-	private JButton btnNewButton_2;
 	public JLabel lblNewLabel_4;
 
 	/**
@@ -77,14 +74,14 @@ public class ServerIhm {
 		frame.getContentPane().setLayout(null);
 
 		textField = new JTextField();
-		textField.setBounds(123, 51, 69, 19);
+		textField.setBounds(123, 24, 69, 19);
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
 		textField.setText("3000");
 
 		JLabel lblNewLabel = new JLabel("Server Logs");
 		lblNewLabel.setForeground(Color.DARK_GRAY);
-		lblNewLabel.setBounds(10, 129, 85, 21);
+		lblNewLabel.setBounds(10, 136, 114, 21);
 		frame.getContentPane().add(lblNewLabel);
 
 		btnNewButton_1 = new JButton("Lancer le serveur");
@@ -100,40 +97,21 @@ public class ServerIhm {
 
 		});
 		btnNewButton_1.setForeground(new Color(0, 0, 0));
-		btnNewButton_1.setBounds(334, 50, 154, 21);
+		btnNewButton_1.setBounds(329, 23, 154, 21);
 		frame.getContentPane().add(btnNewButton_1);
 
 		lblNewLabel_1 = new JLabel("Port d'\u00E9coute:");
 		lblNewLabel_1.setFont(new Font("Lucida Bright", Font.BOLD, 11));
-		lblNewLabel_1.setBounds(10, 54, 85, 13);
+		lblNewLabel_1.setBounds(10, 27, 85, 13);
 		frame.getContentPane().add(lblNewLabel_1);
 
-		lblNewLabel_2 = new JLabel("Base de donn\u00E9e:");
-		lblNewLabel_2.setFont(new Font("Lucida Bright", Font.BOLD, 11));
-		lblNewLabel_2.setBounds(10, 13, 114, 13);
-		frame.getContentPane().add(lblNewLabel_2);
-
-		textField_1 = new JTextField();
-		textField_1.setBounds(123, 10, 179, 19);
-		frame.getContentPane().add(textField_1);
-		textField_1.setColumns(10);
-
-		btnNewButton_2 = new JButton("Selectionner");
-		btnNewButton_2.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnNewButton_2.setBounds(334, 9, 154, 21);
-		frame.getContentPane().add(btnNewButton_2);
-
-		JLabel lblNewLabel_3 = new JLabel("Client connect\u00E9s:");
-		lblNewLabel_3.setFont(new Font("Lucida Bright", Font.PLAIN, 10));
+		JLabel lblNewLabel_3 = new JLabel("Clients connect\u00E9s:");
+		lblNewLabel_3.setFont(new Font("Lucida Bright", Font.PLAIN, 12));
 		lblNewLabel_3.setBounds(10, 87, 114, 13);
 		frame.getContentPane().add(lblNewLabel_3);
 
 		lblNewLabel_4 = new JLabel("0");
-		lblNewLabel_4.setFont(new Font("Lucida Bright", Font.BOLD, 11));
+		lblNewLabel_4.setFont(new Font("Lucida Bright", Font.BOLD, 12));
 		lblNewLabel_4.setBounds(123, 87, 45, 13);
 		frame.getContentPane().add(lblNewLabel_4);
 
@@ -170,9 +148,8 @@ public class ServerIhm {
 		if(!textField.getText().isEmpty()) {
 			try {
 				server = new Wserver(this, Integer.parseInt(textField.getText()));
-				btnNewButton_1.setEnabled(false);
 				
-				System.out.println("ok");
+				
 			}catch(Exception ex){
 				this.logIt("VEUILLEZ ENTRER UN PORT VALIDE");
 			}

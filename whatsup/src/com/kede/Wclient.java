@@ -39,9 +39,9 @@ public class Wclient implements Runnable {
 			this.input = new ObjectInputStream(socket.getInputStream());
 
 		} catch (UnknownHostException e) {
-			e.printStackTrace();
+			
 		} catch (IOException e) {
-			e.printStackTrace();
+			
 		}
 
 	}
@@ -208,8 +208,8 @@ public class Wclient implements Runnable {
                     ihm.logIt("SERVER", "MOI",  "COMMANDE NON RECONUE");
                 }
 			} catch (ClassNotFoundException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				ihm.logIt("ERREUR", "MOI",  "LE SERVER SEMBLE INDISPONIBLE !");
+				running = false;
 			}
 
 		}

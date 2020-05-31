@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
+import java.net.ConnectException;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -66,6 +67,7 @@ public class ClientIhm {
 	public JButton btnNewButton_5;
 	public JButton btnNewButton_4;
 	public JButton btnNewButton_6;
+	private JScrollPane scrollPane_1;
 
 	/**
 	 * Launch the application.
@@ -288,14 +290,17 @@ public class ClientIhm {
 	        };
 	        
 	    comboBox.addActionListener(cbActionListener);    
+		
+		scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(205, 139, 470, 170);
+		frmWhatsup.getContentPane().add(scrollPane_1);
 
 
 		textPane = new JTextArea();
-		textPane.setBounds(205, 139, 470, 170);
+		scrollPane_1.setViewportView(textPane);
 		textPane.setLineWrap(true);
 		textPane.setWrapStyleWord(true);
 		textPane.setFont(new java.awt.Font("Consolas", 0, 12));
-		frmWhatsup.getContentPane().add(textPane);
 
 		textField_4 = new JTextField();
 		textField_4.setBounds(205, 341, 364, 19);
@@ -389,7 +394,7 @@ public class ClientIhm {
 				clientThr = new Thread(client);
 				clientThr.start();
 				client.sendMessage(new Message("CONNECTION", "testUser", "testContent", "SERVER"));
-			} catch (Exception ex) {
+			} catch (Exception ce) {
 				this.logIt("ERREUR", "moi", "Le serveur n'est pas disponible..");
 			}
 
@@ -439,7 +444,7 @@ public class ClientIhm {
 			
 		}catch(Exception e) {
 			this.logIt("Erreur", "moi", "Veuillez Selectionner un destinataire");
-			System.out.println(e);
+			
 		}
 		
 		

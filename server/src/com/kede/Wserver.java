@@ -30,12 +30,13 @@ public class Wserver implements Runnable {
 			sPort = server.getLocalPort();
 
 			ihm.textArea_1
-					.append("Server startet. IP : " + InetAddress.getLocalHost() + ", Port : " + server.getLocalPort());
+					.append("Serveur lancer. IP : " + InetAddress.getLocalHost() + ", Port : " + server.getLocalPort()+"\n");
+			ihm.btnNewButton_1.setEnabled(false);
 
 			this.startTheard();
 		} catch (IOException ioe) {
-			System.out.println("Can not bind to port : " + sPort + "\nRetrying");
-			// ui.RetryStart(0);
+			ihm.textArea_1.append("Le port : " + sPort + " est déjà utilisé !\n");
+			
 		}
 	}
 
