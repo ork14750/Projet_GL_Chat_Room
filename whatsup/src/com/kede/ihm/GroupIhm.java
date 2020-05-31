@@ -97,6 +97,7 @@ public class GroupIhm {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(!textField.getText().isEmpty() && list.getSelectedValuesList().size()>0) {
+					cIhm.addGroup(list.getSelectedValuesList(),textField.getText());
 					System.out.println("group Created "+list.getSelectedValuesList());
 				}
 				

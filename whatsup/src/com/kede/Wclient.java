@@ -8,6 +8,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -49,6 +50,7 @@ public class Wclient implements Runnable {
 		th = null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
 		boolean running = true;
@@ -62,7 +64,11 @@ public class Wclient implements Runnable {
 				if (msg.type.equals("LOGIN")) {
 					if (!msg.body.equals("KO")) {
 						this.ihm.btnNewButton_1.setEnabled(false);
+						this.ihm.btnNewButton_2.setEnabled(false);
 						this.ihm.btnNewButton_3.setEnabled(true);
+						this.ihm.btnNewButton_4.setEnabled(true);
+						this.ihm.btnNewButton_6.setEnabled(true);
+						
 						this.ihm.logIt("SERVER", "MOI", "CONNECTION REUSSITE, VOUS POUVEZ COMMENCER A CHATTER");
 						String[] groups = msg.body.split(";");
 						for(String s: groups) {
@@ -124,6 +130,7 @@ public class Wclient implements Runnable {
 						this.ihm.btnNewButton_1.setEnabled(false);
 						this.ihm.btnNewButton_3.setEnabled(true);
 						this.ihm.btnNewButton_2.setEnabled(false);
+						
 						this.ihm.logIt("SERVER", "MOI", "LOGIN en cours...");
 
 					}else {
@@ -163,6 +170,7 @@ public class Wclient implements Runnable {
                         Upload upl = new Upload(addr, port, ihm.getFile(), ihm);
                         Thread t = new Thread(upl);
                         t.start();
+                        this.ihm.btnNewButton_4.setEnabled(true);
                     }
                     else{
                         ihm.logIt("SERVER", "MOI",  msg.sender+" a réfusé(e) le fichier");
@@ -174,8 +182,29 @@ public class Wclient implements Runnable {
                 	if(msg.body.equals(this.ihm.getLogin())) from = "moi";
                 	ihm.logIt("["+msg.recipient+"] "+from, msg.recipient, msg.body);
                 	
-                }
-                else{
+                }else if(msg.type.equals("ADDED_IN_GROUP")) {
+                	DefaultListModel  list = this.ihm.modelGroup;
+                	list.addElement(msg.recipient);
+						this.ihm.list.setModel(list);
+					
+					
+					if(msg.sender.equals(this.ihm.getLogin())) {
+							try {
+								this.ihm.gIhm.getFrame().dispose();
+								 ihm.logIt("SERVER", "MOI",  "Votre groupe a été créé : "+msg.recipient);
+							}catch(Exception e) {
+								 ihm.logIt("SERVER", "MOI",  "Votre groupe a été créé : "+msg.recipient);
+							}
+						 
+					}else {
+						System.out.println("addd in grou");
+						 ihm.logIt("SERVER", "MOI",  "Vous avez été rajouté dans un nouveau groupe : "+msg.recipient);
+					}
+					
+
+                	
+                	
+                }else{
                     ihm.logIt("SERVER", "MOI",  "COMMANDE NON RECONUE");
                 }
 			} catch (ClassNotFoundException | IOException e) {

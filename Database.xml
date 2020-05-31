@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<data>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><data>
 	<user>
 		<login>
 			chris
@@ -51,4 +50,4 @@
 		</userLogin>
 	</group>
 
-</data>
+<group><createdBy>junior</createdBy><name>tonto</name><userLogin>chris</userLogin><userLogin>junior</userLogin></group><user><login>tonotn</login><password>kede</password></user><user><login>chripf</login><password>kede</password></user></data>

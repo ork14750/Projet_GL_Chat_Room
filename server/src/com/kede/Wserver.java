@@ -5,6 +5,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.kede.database.Database;
@@ -162,6 +163,25 @@ public class Wserver implements Runnable {
                 
           
             
+        }else if(msg.type.equals("NEW_GROUP")) {
+        	String[] groupUser = msg.body.split(";");
+        	Database.getInstance().addGroup(msg.recipient, msg.sender, groupUser);
+        	
+        	List<String> users = Database.getInstance().getUsersByGroup(msg.recipient);
+        	String clientGroup = Database.getInstance().getUserGroups(msg.recipient);
+			
+			
+			for(int i = 0; i<users.size(); i++) {
+				System.out.println("User login "+ users.get(i));
+				Wthread curr_user = findClientByLogin(users.get(i));
+				if(curr_user != null) {
+					System.out.println("User find "+ i);
+					curr_user.sendMessage(new Message("ADDED_IN_GROUP", msg.sender, clientGroup, msg.recipient));
+				}
+			}
+        	
+        	
+        	
         }
 	
 	

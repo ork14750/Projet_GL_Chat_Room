@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
+import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -26,13 +27,12 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import com.kede.Message;
 import com.kede.Wclient;
-import java.awt.Button;
 
 public class ClientIhm {
 	private Wclient client;
 	public Thread clientThr;
 	private File file;
-	
+	public GroupIhm gIhm;
 
 	private String login, password;
 	public  DefaultListModel modelUser;
@@ -60,10 +60,12 @@ public class ClientIhm {
 	private JTextField textField_4;
 	private JComboBox comboBox;
 	public JButton btnNewButton_3;
-	private JList list;
+	public JList list;
 	
 	private JLabel lblNewLabel_4;
-	private JButton btnNewButton_5;
+	public JButton btnNewButton_5;
+	public JButton btnNewButton_4;
+	public JButton btnNewButton_6;
 
 	/**
 	 * Launch the application.
@@ -149,6 +151,7 @@ public class ClientIhm {
 	 */
 	private void initialize() {
 		frmWhatsup = new JFrame();
+		frmWhatsup.getContentPane().setEnabled(false);
 		 try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()	);
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
@@ -323,7 +326,30 @@ public class ClientIhm {
 		lblNewLabel_4.setBounds(326, 388, 141, 13);
 		frmWhatsup.getContentPane().add(lblNewLabel_4);
 		
-		JButton btnNewButton_4 = new JButton("Piece-jointe");
+	
+		
+		btnNewButton_5 = new JButton("Envoie PJ");
+		btnNewButton_5.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if((String) comboBox.getSelectedItem() == "Groupes" || (String) list.getSelectedValue() =="TOUT LE MONDE") {
+					logIt("Erreur", "moi", "L'envoie de PJ est autorisé seulement avec un utilisateur !");
+				}else if(!(list.getSelectedValue().toString().isEmpty())){
+					sendAttach();
+				}
+				
+				
+			}
+			
+		});
+		btnNewButton_5.setVisible(false);
+		btnNewButton_5.setBounds(484, 384, 85, 21);
+		frmWhatsup.getContentPane().add(btnNewButton_5);
+		
+		
+		btnNewButton_4 = new JButton("Piece-jointe");
+		btnNewButton_4.setEnabled(false);
 		btnNewButton_4.addActionListener(new ActionListener() {
 
 			@Override
@@ -338,21 +364,8 @@ public class ClientIhm {
 		btnNewButton_4.setBounds(205, 384, 111, 21);
 		frmWhatsup.getContentPane().add(btnNewButton_4);
 		
-		btnNewButton_5 = new JButton("Envoie PJ");
-		btnNewButton_5.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				sendAttach();
-				
-			}
-			
-		});
-		btnNewButton_5.setVisible(false);
-		btnNewButton_5.setBounds(484, 384, 85, 21);
-		frmWhatsup.getContentPane().add(btnNewButton_5);
-		
-		JButton btnNewButton_6 = new JButton("Nouveau groupe");
+		btnNewButton_6 = new JButton("Nouveau groupe");
+		btnNewButton_6.setEnabled(false);
 		btnNewButton_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				actionOpenGroupIhm();
@@ -451,13 +464,46 @@ public class ClientIhm {
 	public void actionOpenGroupIhm() {
 		
 		 this.modelUser.removeElement("TOUT LE MONDE");
-		 GroupIhm gIhm = new GroupIhm(this);
+		 gIhm = new GroupIhm(this);
 		 gIhm.getFrame().setLocation(this.getFrame().getLocation());
 	     gIhm.getFrame().setVisible(true);
 		 System.out.println("grou");
          gIhm.getFrame().setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
          //gIhm.getFrame().setVisible(false);
 	}
+	
+	
+	public void addGroup(List<String> members, String name) {
+		String arrToString =arrToString(members)+";"+this.getLogin();
+		
+		client.sendMessage(new Message("NEW_GROUP", login, arrToString, name ));
+		
+	}
+	
+	public String arrToString(List<String> l) {
+		String res ="";
+		for(int i =0; i<l.size(); i++) {
+			res+=l.get(i)+";";
+		}
+		return res.substring(0, res.length() -1);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	public File getFile() {
 		return file;
