@@ -3,6 +3,7 @@ package com.kede.database;
 //singleton design pattern
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -36,24 +37,9 @@ public class Database {
 	 * Initialiser la Base de donnée, qui va être créée la racine du répetoire contenant l'application
 	 * @param name nom de la base de donnée
 	 */
-	public Database(String name){
+	public Database(String filePath){
 		
-		Path currentRelativePath = Paths.get("");
-	
-		String s = currentRelativePath.toAbsolutePath().getParent().toString();
-		this.dbPath = s+File.separator+name+".xml";
-		 file = new File(this.dbPath);
-		try {
-			if (file.createNewFile())
-			{
-			    System.out.println("File is created!");
-			} else {
-			    System.out.println("File already exists.");
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.dbPath = filePath;
 		System.out.println(this.dbPath);
 	}
 	
@@ -65,13 +51,13 @@ public class Database {
 	public boolean isUser(String login) {
 		try {
 			
-
+			File fXmlFile = new File(dbPath);
 			DocumentBuilderFactory dbFct = DocumentBuilderFactory.newInstance();
 	        dbFct.setIgnoringElementContentWhitespace(true);
 
 		    DocumentBuilder builder;
 			builder = dbFct.newDocumentBuilder();
-			Document doc = builder.parse(file);
+			Document doc = builder.parse(fXmlFile);
 		    doc.getDocumentElement().normalize();
 		         
 		    NodeList node = doc.getElementsByTagName("user");
@@ -211,12 +197,12 @@ public class Database {
         if(!isUser(login)){ return false; }
         
         try{
-        	            
+        	File fXmlFile = new File(dbPath);
             DocumentBuilderFactory dbFct = DocumentBuilderFactory.newInstance();
 	        dbFct.setIgnoringElementContentWhitespace(true);
 
             DocumentBuilder docBuilder = dbFct.newDocumentBuilder();
-            Document doc = docBuilder.parse(file);
+            Document doc = docBuilder.parse(fXmlFile);
             doc.getDocumentElement().normalize();
             
             NodeList nodeList = doc.getElementsByTagName("user");
@@ -253,7 +239,7 @@ public class Database {
 
 		    DocumentBuilder builder;
 			builder = dbFct.newDocumentBuilder();
-			Document doc = builder.parse(file);
+			Document doc = builder.parse(this.dbPath);
 		    doc.getDocumentElement().normalize();
 		         
 		    NodeList node = doc.getElementsByTagName("group");
@@ -298,7 +284,7 @@ public class Database {
 
 		    DocumentBuilder builder;
 			builder = dbFct.newDocumentBuilder();
-			Document doc = builder.parse(file);
+			Document doc = builder.parse(this.dbPath);
 		    doc.getDocumentElement().normalize();
 		         
 		    NodeList node = doc.getElementsByTagName("group");
@@ -390,10 +376,10 @@ public class Database {
 	 * Retourne l'instance Database
 	 * @return
 	 */
-	 public static Database getInstance()
+	 public static Database getInstance(String filePath)
 	    {           
 	        if (INSTANCE == null)
-	        {   INSTANCE = new Database("Database"); 
+	        {   INSTANCE = new Database(filePath); 
 	        }
 	        return INSTANCE;
 	    }

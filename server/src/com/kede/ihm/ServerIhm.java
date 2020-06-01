@@ -6,8 +6,10 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -30,7 +32,11 @@ public class ServerIhm {
 	public JButton btnNewButton_1;
 	private JLabel lblNewLabel_1;
 	public JLabel lblNewLabel_4;
-
+	private JTextField textField_1;
+	public JFileChooser fileChooser;
+	public String filePath = "C:/Database.xml";
+	private JButton btnNewButton_2;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -53,6 +59,8 @@ public class ServerIhm {
 	 */
 	public ServerIhm() {
 		initialize();
+        fileChooser = new JFileChooser();
+
 	}
 
 	/**
@@ -74,7 +82,7 @@ public class ServerIhm {
 		frame.getContentPane().setLayout(null);
 
 		textField = new JTextField();
-		textField.setBounds(123, 24, 69, 19);
+		textField.setBounds(123, 61, 69, 19);
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
 		textField.setText("3000");
@@ -97,22 +105,23 @@ public class ServerIhm {
 
 		});
 		btnNewButton_1.setForeground(new Color(0, 0, 0));
-		btnNewButton_1.setBounds(329, 23, 154, 21);
+		btnNewButton_1.setBounds(329, 60, 154, 21);
+		btnNewButton_1.setEnabled(false);
 		frame.getContentPane().add(btnNewButton_1);
 
 		lblNewLabel_1 = new JLabel("Port d'\u00E9coute:");
 		lblNewLabel_1.setFont(new Font("Lucida Bright", Font.BOLD, 11));
-		lblNewLabel_1.setBounds(10, 27, 85, 13);
+		lblNewLabel_1.setBounds(10, 64, 85, 13);
 		frame.getContentPane().add(lblNewLabel_1);
 
 		JLabel lblNewLabel_3 = new JLabel("Clients connect\u00E9s:");
 		lblNewLabel_3.setFont(new Font("Lucida Bright", Font.PLAIN, 12));
-		lblNewLabel_3.setBounds(10, 87, 114, 13);
+		lblNewLabel_3.setBounds(10, 113, 114, 13);
 		frame.getContentPane().add(lblNewLabel_3);
 
 		lblNewLabel_4 = new JLabel("0");
 		lblNewLabel_4.setFont(new Font("Lucida Bright", Font.BOLD, 12));
-		lblNewLabel_4.setBounds(123, 87, 45, 13);
+		lblNewLabel_4.setBounds(135, 113, 45, 13);
 		frame.getContentPane().add(lblNewLabel_4);
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -142,8 +151,43 @@ public class ServerIhm {
 		});
 		btnNewButton.setBounds(257, 368, 114, 21);
 		frame.getContentPane().add(btnNewButton);
+		
+		JLabel lblNewLabel_2 = new JLabel("Base de donn\u00E9e");
+		lblNewLabel_2.setBounds(10, 29, 96, 13);
+		frame.getContentPane().add(lblNewLabel_2);
+		
+		textField_1 = new JTextField();
+		textField_1.setBounds(123, 26, 182, 19);
+		frame.getContentPane().add(textField_1);
+		textField_1.setColumns(10);
+		
+		btnNewButton_2 = new JButton("Charger");
+		btnNewButton_2.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				actionChooseDB();
+				
+			}
+			
+		});
+		btnNewButton_2.setBounds(329, 29, 85, 21);
+		frame.getContentPane().add(btnNewButton_2);
 	}
 	
+	protected void actionChooseDB() {
+		 fileChooser.showDialog(frame, "Select");
+	     File file = fileChooser.getSelectedFile();
+	     if(file != null){
+	            filePath = file.getPath();
+	            if(this.isWin32()){ filePath = filePath.replace("\\", "/"); }
+	            textField_1.setText(filePath);
+	            btnNewButton_2.setEnabled(false);
+	            btnNewButton_1.setEnabled(true);
+	       }
+		
+	}
+
 	/**
 	 * Lancer Le Wserver
 	 * @param e ActionEvent
@@ -171,4 +215,8 @@ public class ServerIhm {
 	public void logIt(String message) {
 		textArea_1.append("\n" + message);
 	}
+	
+	public boolean isWin32(){
+        return System.getProperty("os.name").startsWith("Windows");
+    }
 }

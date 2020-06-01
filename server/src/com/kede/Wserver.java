@@ -32,6 +32,8 @@ public class Wserver implements Runnable {
 	 * @param sPort Le port d'ecoute du serveur
 	 */
 	public Wserver(ServerIhm ihm, int  sPort) {
+		new Database(ihm.filePath);
+		System.out.println(ihm.filePath);
 		this.sPort = sPort;
 		this.ihm = ihm;
 		clients = new Wthread[10];
@@ -120,8 +122,8 @@ public class Wserver implements Runnable {
 		}else if (msg.type.equals("LOGIN")) {
 			System.out.println(msg.sender+" "+msg.body);
 			if(this.findClientByLogin(msg.sender) == null) {
-				if(Database.getInstance().chckLogin(msg.sender, msg.body)) {
-					String clientGroup = Database.getInstance().getUserGroups(msg.sender);
+				if(Database.getInstance(this.ihm.filePath).chckLogin(msg.sender, msg.body)) {
+					String clientGroup = Database.getInstance(this.ihm.filePath).getUserGroups(msg.sender);
 					
 					clients[this.findClientByID(ID)].setClientLogin(msg.sender);
 					clients[this.findClientByID(ID)].sendMessage(new Message("LOGIN", "SERVER", clientGroup, msg.sender));
@@ -153,8 +155,8 @@ public class Wserver implements Runnable {
             this.diffuseMessage("SIGNOUT", "SERVER", msg.sender);
             removeClient(ID); 
         }else if (msg.type.equals("SIGNUP")) {
-			if(!Database.getInstance().chckLogin(msg.sender, msg.body)) {
-				Database.getInstance().addUser(msg.sender, msg.body);
+			if(!Database.getInstance(this.ihm.filePath).chckLogin(msg.sender, msg.body)) {
+				Database.getInstance(this.ihm.filePath).addUser(msg.sender, msg.body);
 				
 				clients[this.findClientByID(ID)].setClientLogin(msg.sender);
 				clients[this.findClientByID(ID)].sendMessage(new Message("SIGNUP", "SERVER", "OK", msg.sender));
@@ -182,7 +184,7 @@ public class Wserver implements Runnable {
 			}
 		}else if(msg.type.equals("MESSAGE_GROUP")){
 				
-				List<String> users = Database.getInstance().getUsersByGroup(msg.recipient);
+				List<String> users = Database.getInstance(this.ihm.filePath).getUsersByGroup(msg.recipient);
 				
 				for(int i = 0; i<users.size(); i++) {
 					System.out.println("User login "+ users.get(i));
@@ -197,10 +199,10 @@ public class Wserver implements Runnable {
             
         }else if(msg.type.equals("NEW_GROUP")) {
         	String[] groupUser = msg.body.split(";");
-        	Database.getInstance().addGroup(msg.recipient, msg.sender, groupUser);
+        	Database.getInstance(this.ihm.filePath).addGroup(msg.recipient, msg.sender, groupUser);
         	
-        	List<String> users = Database.getInstance().getUsersByGroup(msg.recipient);
-        	String clientGroup = Database.getInstance().getUserGroups(msg.recipient);
+        	List<String> users = Database.getInstance(this.ihm.filePath).getUsersByGroup(msg.recipient);
+        	String clientGroup = Database.getInstance(this.ihm.filePath).getUserGroups(msg.recipient);
 			
 			
 			for(int i = 0; i<users.size(); i++) {
