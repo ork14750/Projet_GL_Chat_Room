@@ -16,6 +16,11 @@ import com.kede.fileManager.Download;
 import com.kede.fileManager.Upload;
 import com.kede.ihm.ClientIhm;
 
+/**
+ * Logique de la gestion d'entrée/sortie d'un client
+ * @author Christophe Kede
+ *
+ */
 public class Wclient implements Runnable {
 
 	private ObjectInputStream input;
@@ -25,7 +30,10 @@ public class Wclient implements Runnable {
 	private String address;
 	private ClientIhm ihm;
 
-
+	/**
+	 * Initialiser un nouvea Wclient
+	 * @param ihm ClientIhm, interface client
+	 */
 	public Wclient(ClientIhm ihm) {
 		this.address = "127.0.0.1";
 		this.port = 3000;
@@ -46,10 +54,17 @@ public class Wclient implements Runnable {
 
 	}
 
+	/**
+	 * Arret du thread client
+	 * @param th Thread
+	 */
 	public void stopThread(Thread th) {
 		th = null;
 	}
 
+	/**
+	 * Ecouter les input/output
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
@@ -216,6 +231,10 @@ public class Wclient implements Runnable {
 
 	}
 
+	/**
+	 * Methode Envoie de Message au Serveur
+	 * @param msg Message
+	 */
 	public void sendMessage(Message msg) {
 		try {
 

@@ -10,6 +10,12 @@ import java.util.List;
 
 import com.kede.database.Database;
 import com.kede.ihm.ServerIhm;
+/**
+ * La classe Serveur, qui va gérer les échanges entres clients 
+ * @author Christophe kede
+ * 
+ *
+ */
 
 public class Wserver implements Runnable {
 
@@ -19,7 +25,12 @@ public class Wserver implements Runnable {
 	private int nbClients = 0;
 	private int sPort;
 	private ServerIhm ihm;
-
+	
+	/**
+	 * Le constructeur prend parametre
+	 * @param ihm  l'interface utilisateur d'administration du serveur
+	 * @param sPort Le port d'ecoute du serveur
+	 */
 	public Wserver(ServerIhm ihm, int  sPort) {
 		this.sPort = sPort;
 		this.ihm = ihm;
@@ -40,6 +51,12 @@ public class Wserver implements Runnable {
 		}
 	}
 
+
+
+	/**
+	 * Lancement du thread Serveur
+	 * Le serveur Attend la connexion d'un client
+	 */
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
@@ -59,6 +76,9 @@ public class Wserver implements Runnable {
 
 	}
 
+	/**
+	 * Méthode permettant de lancer un Thread
+	 */
 	public void startTheard() {
 		if (thread == null) {
 			thread = new Thread(this);
@@ -66,6 +86,12 @@ public class Wserver implements Runnable {
 		}
 	}
 
+	/**
+	 * Methode permettant de lancer un nouveau Wthread, pour les clients qui se connectent
+	 * au serveur
+	 * @param socket, socket du client
+	 * @throws IOException
+	 */
 	public void addClientThread(Socket socket) throws IOException {
 
 		this.clients[this.nbClients] = new Wthread(this, socket);
@@ -79,7 +105,12 @@ public class Wserver implements Runnable {
 		this.nbClients++;
 
 	}
-
+	
+	/**
+	 * Methode qui permet d'ecouter les inputs client recus par le serveur
+	 * @param ID, ID du client
+	 * @param msg Message 
+	 */
 	public synchronized void messageHandler(int ID, Message msg) {
 		if (msg.type.equals("CONNECTION")) {
 			 clients[this.findClientByID(ID)].sendMessage(new Message("CONNECTION", "SERVER", "OK", msg.sender));
@@ -188,7 +219,10 @@ public class Wserver implements Runnable {
 	
 	
 	}
-
+	/**
+	 * 
+	 * @return ServerIhm 
+	 */
 	public ServerIhm getIhm() {
 		return this.ihm;   
 	}
@@ -202,6 +236,11 @@ public class Wserver implements Runnable {
 		return -1;
 	}
 
+	/**
+	 * Trouver le Wthread d'un client grace à son login
+	 * @param login client
+	 * @return Wthread
+	 */
 	public Wthread findClientByLogin(String login) {
 		for (int i = 0; i < this.nbClients; i++) {
 			if (clients[i].getClientLogin().equals(login)) {
@@ -211,6 +250,12 @@ public class Wserver implements Runnable {
 		return null;
 	}
 
+	/**
+	 * Envoie de message à tout client loggé au serveur
+	 * @param type Type du message
+	 * @param sender autheur du message
+	 * @param body   contenu du message
+	 */
 	public void diffuseMessage(String type, String sender, String body) {
 		Message msg = new Message(type, sender, body, "TOUT LE MONDE");
 		for (int i = 0; i < this.nbClients; i++) {
@@ -218,6 +263,10 @@ public class Wserver implements Runnable {
 		}
 	}
 	
+	/**
+	 * Fermer le Wthread d'un client
+	 * @param ID id du client
+	 */
 	public synchronized void removeClient(int ID) {
 		int position = this.findClientByID(ID);
 		if (position >= 0){  
@@ -243,12 +292,20 @@ public class Wserver implements Runnable {
 		
 	}
 	
+	/**
+	 * Envoyer la liste d'utilisateur connecté au un client
+	 * @param user destinataire
+	 */
 	public void sendClientList(String user){
 		 for(int i = 0; i < nbClients; i++){
 	            findClientByLogin(user).sendMessage(new Message("NEW_USER", "SERVER", clients[i].getClientLogin(), user));
 	        }
 	}
-	
+	/**
+	 * Convertir une List<String> en chaine de caractère
+	 * @param l la liste
+	 * @return chaine de caractère
+	 */
 	public String arrToString(List<String> l) {
 		String res ="";
 		for(int i =0; i<l.size(); i++) {
@@ -257,6 +314,9 @@ public class Wserver implements Runnable {
 		return res.substring(0, res.length() -1);
 	}
 
+	/**
+	 * Arreter le thread du serveur
+	 */
 	@SuppressWarnings("deprecation")
 	public void stopTheard() {
 		if (thread == null) {

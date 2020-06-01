@@ -8,6 +8,11 @@ import java.net.Socket;
 
 import com.kede.ihm.ClientIhm;
 
+/**
+ * Class pour la gestion des téléchargements 
+ * @author Christophe Kede
+ *
+ */
 public class Download implements Runnable {
 
 	private Socket sckt;
@@ -24,6 +29,11 @@ public class Download implements Runnable {
 	
 	private ClientIhm ihm;
 	
+	/**
+	 * Initialisation du télechargement
+	 * @param to Destination 
+	 * @param ihm ClientIhm
+	 */
 	public Download(String to, ClientIhm ihm) {
 		this.to = to; 
 		this.ihm = ihm;
@@ -36,7 +46,9 @@ public class Download implements Runnable {
 		}
 	}
 	
-	
+	/**
+	 * Processus de telechargement
+	 */
 	@Override
 	public void run() {
 		try {

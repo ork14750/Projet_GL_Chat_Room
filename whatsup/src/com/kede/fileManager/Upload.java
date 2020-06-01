@@ -9,6 +9,11 @@ import java.net.Socket;
 
 import com.kede.ihm.ClientIhm;
 
+/**
+ * Classe pour la Gestion des uploads
+ * @author Christophe Kede
+ *
+ */
 public class Upload implements Runnable{
 	
 	private int port;
@@ -19,6 +24,13 @@ public class Upload implements Runnable{
 	private OutputStream output;
 	private ClientIhm ihm;
 	
+	/**
+	 * Initialisation d'un upload
+	 * @param addr Destination
+	 * @param port Port
+	 * @param fpath  Fichier
+	 * @param ihm  ClientIhm
+	 */
 	public Upload(String addr, int port, File fpath, ClientIhm ihm) {
 		super();
 		
@@ -45,6 +57,9 @@ public class Upload implements Runnable{
 		
 	}
 
+	/**
+	 * Processus d'upload
+	 */
 	@Override
 	public void run() {
 		 try {       

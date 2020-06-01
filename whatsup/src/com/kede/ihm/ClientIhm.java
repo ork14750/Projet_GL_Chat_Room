@@ -28,7 +28,11 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import com.kede.Message;
 import com.kede.Wclient;
-
+/**
+ * IHM client
+ * @author Christophe Kede
+ *
+ */
 public class ClientIhm {
 	private Wclient client;
 	public Thread clientThr;
@@ -384,6 +388,9 @@ public class ClientIhm {
 		return this.frmWhatsup;
 	}
 	
+	/**
+	 * Joinde le serveur
+	 */
 	public void actionJoinServer() {
 		String host = this.textField.getText();
 		int port = Integer.parseInt(this.textField_1.getText());
@@ -402,11 +409,20 @@ public class ClientIhm {
 
 	}
 
+	/**
+	 * Methode : Logger un message sur l'interface
+	 * @param from: Emetteur
+	 * @param to : Destinataire
+	 * @param msg String message
+	 */
 	public void logIt(String from, String to, String msg) {
 		this.textPane.append("[ " + from + "> " + to + " ] : "+msg+"\n");
 
 	}
 
+	/**
+	 * Se logger au serveur
+	 */
 	@SuppressWarnings("deprecation")
 	public void actionLogin() {
 		this.login = this.textField_2.getText();
@@ -418,6 +434,9 @@ public class ClientIhm {
 
 	}
 	
+	/**
+	 * S'inscrire à Whatsup
+	 */
 	public void actionSignup() {
 		this.login = this.textField_2.getText();
     	password = this.textField_3.getText();
@@ -429,7 +448,9 @@ public class ClientIhm {
 	}
 	
 	
-	    
+	/**
+	 * Action d'envoie de message au serveur    
+	 */
 	public void actionSendMessage() {
 		String body = this.textField_4.getText();
 		try {
@@ -450,6 +471,9 @@ public class ClientIhm {
 		
 	}
 	
+	/**
+	 * Action  Choisir une pièce-jointe
+	 */
 	public void actionChooseAttach() {
         JFileChooser chooser = new JFileChooser();
         chooser.showDialog(this.frmWhatsup, "Choisissez un ficher");
@@ -466,6 +490,9 @@ public class ClientIhm {
         }    
 
 	}
+	/**
+	 * Ouvrir l'IHM de la gestion de GROUPE
+	 */
 	public void actionOpenGroupIhm() {
 		
 		 this.modelUser.removeElement("TOUT LE MONDE");
@@ -477,7 +504,11 @@ public class ClientIhm {
          //gIhm.getFrame().setVisible(false);
 	}
 	
-	
+	/**
+	 * Methoder : Ajouter un nouveau Groupe 
+	 * @param members List<String> de membres
+	 * @param name Nom du groupe
+	 */
 	public void addGroup(List<String> members, String name) {
 		String arrToString =arrToString(members)+";"+this.getLogin();
 		

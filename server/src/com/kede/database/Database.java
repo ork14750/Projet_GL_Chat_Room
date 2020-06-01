@@ -20,13 +20,22 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+/**
+ * Gestion de la base de donnée XML
+ * Singleton
+ * @author Christophe Kede
+ *
+ */
 public class Database {
 	
 	private String dbPath;
 	private File file;
 	
 	private static Database INSTANCE = null;
-	
+	/**
+	 * Initialiser la Base de donnée, qui va être créée la racine du répetoire contenant l'application
+	 * @param name nom de la base de donnée
+	 */
 	public Database(String name){
 		
 		Path currentRelativePath = Paths.get("");
@@ -48,6 +57,11 @@ public class Database {
 		System.out.println(this.dbPath);
 	}
 	
+	/**
+	 * Méthode qui vérifie si un utilisateur existe
+	 * @param login
+	 * @return Boolean 
+	 */
 	public boolean isUser(String login) {
 		try {
 			
@@ -83,7 +97,11 @@ public class Database {
 		}
        
 	}
-	
+		/**
+		 * Methode ajout d'un nouvelle utilisateur
+		 * @param login
+		 * @param password
+		 */
 	   public void addUser(String login, String password){
 	        
 	        try {
@@ -115,7 +133,12 @@ public class Database {
 	   
 	   
 	   
-	   
+	   /**
+	    * Methode d'ajout d'un nouveau Groupe d'utilisateur
+	    * @param name String
+	    * @param createddBy String
+	    * @param groupUser String[]
+	    */
 	   public void addGroup(String name, String createddBy, String[] groupUser){
 	        
 	        try {
@@ -164,7 +187,12 @@ public class Database {
 	   
 	
 	
-	
+	/**
+	 * Methode qui retourne la valeur d'une balise du Fichier XML
+	 * @param nom de la balise
+	 * @param el Element
+	 * @return String Valeur de la basile
+	 */
 	 public  String getValue(String tag, Element el) {
 			NodeList nList = el.getElementsByTagName(tag).item(0).getChildNodes();
 		    Node nValue = (Node) nList.item(0);
@@ -172,6 +200,12 @@ public class Database {
 		  }
 	 
 	 
+	 /**
+	  * Methode qui Verifie si les identifiants entrés sont correctes 
+	  * @param login
+	  * @param password
+	  * @return Bolean
+	  */
    public boolean chckLogin(String login, String password){
         
         if(!isUser(login)){ return false; }
@@ -204,7 +238,11 @@ public class Database {
     }
    
   
-    
+    /**
+     * Mehtode Retourne les groupes auxquels est inscit l'utilisateur
+     * @param login
+     * @return String de groupes
+     */
    public String getUserGroups(String login){
 	   try {
 			System.out.println("group login "+login);
@@ -244,6 +282,11 @@ public class Database {
 		}
    }
    
+   /**
+    * Retourne les utilisateurs appertenants à  un groupe
+    * @param name nom du Groupe
+    * @return List d'utilisateur
+    */
    public  List<String> getUsersByGroup(String name){
 	   try {
 		   
@@ -287,6 +330,7 @@ public class Database {
 		}
    }
    
+   
    public  boolean isMatchGroup(String tag, Element el,String login) {
 	   boolean isIn = false;
 	   NodeList t = el.getElementsByTagName(tag);
@@ -300,6 +344,8 @@ public class Database {
 	 	}
 		return  isIn;
 	  }
+   
+
    
    private  List<String> findUsersInGroup(String tag, Element el,String login) {
 	                  
@@ -340,6 +386,10 @@ public class Database {
 		return res.substring(0, res.length() -1);
 	}
 	
+	/**
+	 * Retourne l'instance Database
+	 * @return
+	 */
 	 public static Database getInstance()
 	    {           
 	        if (INSTANCE == null)

@@ -143,7 +143,11 @@ public class ServerIhm {
 		btnNewButton.setBounds(257, 368, 114, 21);
 		frame.getContentPane().add(btnNewButton);
 	}
-
+	
+	/**
+	 * Lancer Le Wserver
+	 * @param e ActionEvent
+	 */
 	private void launchSeverBtn(ActionEvent e) {
 		if(!textField.getText().isEmpty()) {
 			try {
@@ -159,7 +163,11 @@ public class ServerIhm {
 		}
 		
 	}
-
+	
+	/**
+	 * Logger des infos dans l'interface
+	 * @param message String
+	 */
 	public void logIt(String message) {
 		textArea_1.append("\n" + message);
 	}
